@@ -21,7 +21,6 @@ public class SongsSql
 				+ "(start with 100, increment by 1),"
 				+ "TITLE varchar(255),"
 				+ "LENGTH int,"
-				+ "GENRE varchar(255),"
 				+ "ARTIST_ID int,"
 				+ "ALBUM_ID int)";
 	}
@@ -29,12 +28,12 @@ public class SongsSql
 	public static String fillTable()
 	{
 		return "INSERT INTO SONGS ("
-				+ "TITLE, LENGTH, GENRE, ARTIST_ID, ALBUM_ID) VALUES"
-				+ "('Kill Jay Z', 178,'HIP-HOP', 300, 200),"
-				+ "('Heres to the Night', 249,'Rock', 301, 201),"
-				+ "('tonite', 347,'Rock', 302, 202),"
-				+ "('Serenade No. 13', 384,'Classical', 303, 203),"
-				+ "('5th Symphony in C Minor', 2180,'Classical', 304, 204)";
+				+ "TITLE, LENGTH, ARTIST_ID, ALBUM_ID) VALUES"
+				+ "('Kill Jay Z', 178, 300, 200),"
+				+ "('Heres to the Night', 249, 301, 201),"
+				+ "('tonite', 347, 302, 202),"
+				+ "('Serenade No. 13', 384, 303, 203),"
+				+ "('5th Symphony in C Minor', 2180, 304, 204)";
 
 	}
 

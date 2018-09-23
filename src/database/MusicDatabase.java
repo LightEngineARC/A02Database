@@ -11,17 +11,19 @@ public class MusicDatabase
 {
 	public static void main(String[] args) throws SQLException
 	{
-		// executeSqlStatement(SongsSql.fillTable());
+		executeSqlStatement(ArtistsSql.createTable(), ArtistsSql.fillTable(), SongsSql.createTable());
+		executeSqlStatement(AlbumSql.createTable(), AlbumSql.fillTable(),SongsSql.fillTable());
+
 		executeQueries(SongsSql.query_All(), ArtistsSql.query_All(), AlbumSql.query_All());
 
 		System.out.println("done\n");
 	}
 
-	public static void executeSqlStatement(String... sqlStatements) throws SQLException
+	private static void executeSqlStatement(String... sqlStatements) throws SQLException
 	{
-		try (Connection connection = DriverManager.getConnection("jdbc:derby:MusicDatabase");
+		try (Connection connection = DriverManager.getConnection("jdbc:derby:MusicDatabase;create=true");
 				// attribute "...;create=true" removed after database creation
-				Statement statement = connection.createStatement();)
+				Statement statement = connection.createStatement())
 		{
 			for (String sqlStatement : sqlStatements)
 			{
@@ -45,7 +47,7 @@ public class MusicDatabase
 				System.out.printf("%-" + metaData.getColumnLabel(i).length() + "s ", s.getObject(i) + " ");
 			}
 
-			System.out.println("");
+			System.out.println();
 
 		}
 		System.out.println();
@@ -58,9 +60,8 @@ public class MusicDatabase
 	 * Purpose : prints column headers and separated by two spaces and adds a line
 	 * of dashes
 	 *
-	 * @param :
-	 *            metadata
-	 * @throws SQLException
+	 * @param : metadata
+	 * @throws : SQLException
 	 *
 	 ***************************************************
 	 */
@@ -92,7 +93,7 @@ public class MusicDatabase
 	private static void executeQueries(String... query) throws SQLException
 	{
 		try (Connection connection = DriverManager.getConnection("jdbc:derby:MusicDatabase");
-				Statement statement = connection.createStatement();)
+				Statement statement = connection.createStatement())
 		{
 			for (String queries : query)
 			{

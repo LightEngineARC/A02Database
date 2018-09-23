@@ -33,6 +33,7 @@ hs_err_pid*
 /target
 /work
 /dojo
+MusicDatabase/
 /*.iws
 /*.ipr
 /*.iml

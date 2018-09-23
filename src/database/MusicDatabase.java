@@ -22,7 +22,7 @@ public class MusicDatabase
 	private static void executeSqlStatement(String... sqlStatements) throws SQLException
 	{
 		try (Connection connection = DriverManager.getConnection("jdbc:derby:MusicDatabase;create=true");
-				// attribute "...;create=true" removed after database creation
+				// attribute "...;create=true" removed after databaseold creation
 				Statement statement = connection.createStatement())
 		{
 			for (String sqlStatement : sqlStatements)

@@ -15,6 +15,7 @@ import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
+import javax.swing.JScrollPane;
 
 /**
  * @author Ashton Chatelain
@@ -65,10 +66,13 @@ public class DataGUI extends JFrame {
         JComboBox<String> comboBox_2 = new JComboBox();
         comboBox_2.setBounds(285, 51, 130, 30);
         contentPane.add(comboBox_2);
+        
+        JScrollPane scrollPane = new JScrollPane();
+        scrollPane.setBounds(5, 116, 424, 185);
+        contentPane.add(scrollPane);
 
         table = new JTable();
-        table.setBounds(5, 116, 424, 185);
-        contentPane.add(table);
+        scrollPane.setViewportView(table);
 
         JLabel lblArtist = new JLabel("Filter by Artist");
         lblArtist.setHorizontalAlignment(SwingConstants.CENTER);
@@ -97,13 +101,10 @@ public class DataGUI extends JFrame {
         MusicDatabase musicDatabase = new MusicDatabase();
         try {
             //musicDatabase.createAndFillDB();
-            table = new JTable(musicDatabase.executeQuery(ArtistsSql.query_All()));
-            System.out.print(table);
+            table.setModel(musicDatabase.executeQuery(ArtistsSql.query_All()));
         } catch (SQLException e) {
             System.out.println("SQL exception when executing query_all");
         }
-        contentPane.add(table);
-        contentPane.updateUI();
 
     }
 

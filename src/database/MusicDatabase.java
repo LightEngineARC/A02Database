@@ -9,17 +9,24 @@ import java.sql.Statement;
 
 public class MusicDatabase
 {
+	//TEST CLIENT
 	public static void main(String[] args) throws SQLException
 	{
-		executeSqlStatement(ArtistsSql.createTable(), ArtistsSql.fillTable(), SongsSql.createTable());
-		executeSqlStatement(AlbumSql.createTable(), AlbumSql.fillTable(),SongsSql.fillTable());
+		//TODO use for testing createAndFillDB();
 
 		executeQueries(SongsSql.query_All(), ArtistsSql.query_All(), AlbumSql.query_All());
 
 		System.out.println("done\n");
 	}
+	public MusicDatabase(){
 
-	private static void executeSqlStatement(String... sqlStatements) throws SQLException
+	}
+	public static void createAndFillDB() throws SQLException {
+		executeSqlStatement(ArtistsSql.createTable(), ArtistsSql.fillTable(), SongsSql.createTable());
+		executeSqlStatement(AlbumSql.createTable(), AlbumSql.fillTable(),SongsSql.fillTable());
+	}
+
+	public static void executeSqlStatement(String... sqlStatements) throws SQLException
 	{
 		try (Connection connection = DriverManager.getConnection("jdbc:derby:MusicDatabase;create=true");
 				// attribute "...;create=true" removed after databaseold creation
@@ -33,7 +40,7 @@ public class MusicDatabase
 
 	}
 
-	private static void printData(ResultSet s) throws SQLException
+	public static void printData(ResultSet s) throws SQLException
 	{
 
 		ResultSetMetaData metaData = s.getMetaData();

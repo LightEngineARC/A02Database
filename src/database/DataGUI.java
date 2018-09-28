@@ -22,7 +22,6 @@ import javax.swing.border.EmptyBorder;
  */
 public class DataGUI extends JFrame
 {
-
 	private JPanel contentPane;
 	private JTable table;
 

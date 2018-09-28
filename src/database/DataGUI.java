@@ -98,10 +98,12 @@ public class DataGUI extends JFrame {
         try {
             //musicDatabase.createAndFillDB();
             table = new JTable(musicDatabase.executeQuery(ArtistsSql.query_All()));
+            System.out.print(table);
         } catch (SQLException e) {
             System.out.println("SQL exception when executing query_all");
         }
-        contentPane.repaint();
+        contentPane.add(table);
+        contentPane.updateUI();
 
     }
 

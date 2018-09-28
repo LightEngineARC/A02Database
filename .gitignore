@@ -400,3 +400,7 @@ MusicDatabase/
 /php/create.sql
 /php/drop.sql
 /php/derby.log
+
+# raw data
+/data/data_wanted/
+/data/*.tar.*

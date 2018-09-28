@@ -1,12 +1,13 @@
 package dataHandling;
 
 /**
- * Specifies format for artist table and utilizies parent class to parse song data from data_wanted/artist
+ * Specifies format for artist table and utilizes parent class to parse song data from data_wanted/artist
  * <p>
+ *
  * @author Alec Mills
  */
 public class ArtistParser extends Parser {
-    private String format = "ARTIST_NAME";
+    private final String format = "ARTIST_NAME";
 
     public ArtistParser() {
         super("artist");
@@ -17,16 +18,16 @@ public class ArtistParser extends Parser {
     }
 
     /**
-     * defines what data and what format to take from data soure
-     * @param columns
-     * @return
+     * defines what data and what format to take from data source
+     *
+     * @param columns raw data
+     * @return desired data
      */
     @Override
     protected String[] getLineData(String[] columns) {
-        String[] result = new String[] {
+        return new String[]{
                 columns[3]
         };
-        return result;
     }
 
     public static void main(String[] args) {

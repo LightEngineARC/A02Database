@@ -6,8 +6,8 @@
  */
 package database;
 
-import java.awt.EventQueue;
-
+import java.awt.*;
+import java.sql.SQLException;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -93,6 +93,18 @@ public class DataGUI extends JFrame {
         comboBox_3.addItem("Artist");
         comboBox_3.addItem("Album");
         comboBox_3.addItem("Genre");
+
+        MusicDatabase musicDatabase = new MusicDatabase();
+        try {
+            //musicDatabase.createAndFillDB();
+            table = new JTable(musicDatabase.executeQuery(ArtistsSql.query_All()));
+        } catch (SQLException e) {
+            System.out.println("SQL exception when executing query_all");
+        }
+        contentPane.repaint();
+
     }
 
 }
+
+

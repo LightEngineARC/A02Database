@@ -12,7 +12,6 @@ import java.sql.Statement;
 
 public class MusicDatabase {
 
-    // TODO update result sets when any query is run
     private ResultSet results;
     private ResultSetMetaData metaData;
 
@@ -131,7 +130,6 @@ public class MusicDatabase {
         // Get all column names from meta data and add columns to table model
         for (int columnIndex = 1; columnIndex <= columnCount; columnIndex++) {
             tableModel.addColumn(metaData.getColumnLabel(columnIndex));
-            System.out.println("Column " + metaData.getColumnLabel(columnIndex));
         }
 
         Object[] row = new Object[columnCount];
@@ -163,11 +161,9 @@ public class MusicDatabase {
             int columnCount = metaData.getColumnCount();
 
             while (this.results.next()) {
-                System.out.println("results has next");
                 for (int i = 1; i <= columnCount; i++) {
                     comboBox.addItem(this.results.getString("COL"));
                 }
-
             }
 
         }

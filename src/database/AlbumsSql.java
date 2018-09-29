@@ -43,9 +43,10 @@ public class AlbumsSql {
     // }
 
     public static String query_All() {
-        return "SELECT * FROM ALBUMs";
+        return "SELECT * FROM ALBUMS";
     }
+
     public static String query_Albums() {
-        return "SELECT ALBUM_NAME as COL FROM ALBUMs";
+        return "SELECT ALBUM_NAME as COL FROM ALBUMS order by COL ASC";
     }
 }

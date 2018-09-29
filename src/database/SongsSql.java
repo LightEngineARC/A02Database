@@ -36,15 +36,11 @@ public class SongsSql {
     }
 
     // - - - - - - - - - - - query statements - - - - - - - - - - - - -
-    // TODO change this to something useful like title and artist and genre
-    // public static String query_nameMAjor()
-    // {
-    // return "SELECT ID, LastNAme, firstname, major FROM Songs WHERE major='CS'";
-    // }
 
     public static String query_All() {
         return "SELECT * FROM SONGS";
     }
+
     public static String query_Artists() {
         return "SELECT TITLE as COL FROM ARTISTS";
     }

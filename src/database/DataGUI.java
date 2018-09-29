@@ -1,8 +1,8 @@
 /**
- *  @author Ashton Chatelain
- *  
- *  A02Database
- *  Description : (Narrative description, not code)
+ * @author Ashton Chatelain
+ * <p>
+ * A02Database
+ * Description : (Narrative description, not code)
  */
 package database;
 
@@ -61,18 +61,19 @@ public class DataGUI extends JFrame {
         setContentPane(contentPane);
         contentPane.setLayout(null);
 
-        JComboBox<String> comboBox_1 = new JComboBox<String>();
-        comboBox_1.addActionListener(new ActionListener() {
-        	public void actionPerformed(ActionEvent arg0) {
-        	}
+        JComboBox<String> artistComboBox = new JComboBox<String>();
+        artistComboBox.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent arg0) {
+                //TODO filter songs with this artist
+            }
         });
-        comboBox_1.setBounds(123, 51, 130, 30);
-        contentPane.add(comboBox_1);
+        artistComboBox.setBounds(123, 51, 130, 30);
+        contentPane.add(artistComboBox);
 
-        JComboBox<String> comboBox_2 = new JComboBox<String>();
-        comboBox_2.setBounds(289, 51, 130, 30);
-        contentPane.add(comboBox_2);
-        
+        JComboBox<String> albumComboBox = new JComboBox<String>();
+        albumComboBox.setBounds(289, 51, 130, 30);
+        contentPane.add(albumComboBox);
+
         JScrollPane scrollPane = new JScrollPane();
         scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
         scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
@@ -91,19 +92,18 @@ public class DataGUI extends JFrame {
         lblAlbum.setHorizontalAlignment(SwingConstants.CENTER);
         lblAlbum.setBounds(289, 11, 130, 29);
         contentPane.add(lblAlbum);
-        comboBox_1.addItem("");
+        artistComboBox.addItem("");
 
-        comboBox_2.addItem("");
+        albumComboBox.addItem("");
 
         MusicDatabase musicDatabase = new MusicDatabase();
         try {
-        	table.setModel(musicDatabase.tableModelQuery(SongsArtistsAlbums.query_All()));
+            table.setModel(musicDatabase.tableModelQuery(SongsArtistsAlbums.query_All()));
             //musicDatabase.createAndFillDB();
-        	
-        	musicDatabase.resultSetToColumn(comboBox_2, AlbumsSql.query_Albums());
-        	
-        	musicDatabase.resultSetToColumn(comboBox_1,ArtistsSql.query_Artists());
-           
+
+            musicDatabase.resultSetToColumn(albumComboBox, AlbumsSql.query_Albums());
+            musicDatabase.resultSetToColumn(artistComboBox, ArtistsSql.query_Artists());
+
         } catch (SQLException e) {
             System.out.println("SQL exception when executing query_all");
         }

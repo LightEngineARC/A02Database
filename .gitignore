@@ -404,3 +404,6 @@ MusicDatabase/
 # raw data
 /data/data_wanted/
 /data/*.tar.*
+
+# scratch files
+/*/*/Test.*

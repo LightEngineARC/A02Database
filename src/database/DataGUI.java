@@ -8,6 +8,7 @@ package database;
 
 import java.awt.*;
 import java.sql.SQLException;
+
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -17,6 +18,8 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 /**
  * @author Ashton Chatelain
@@ -27,6 +30,7 @@ import javax.swing.ScrollPaneConstants;
 public class DataGUI extends JFrame {
     private JPanel contentPane;
     private JTable table;
+    private boolean isFiltered = false;
 
     /**
      * Launch the application.
@@ -51,28 +55,28 @@ public class DataGUI extends JFrame {
      */
     public DataGUI() {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBounds(100, 100, 450, 340);
+        setBounds(100, 100, 570, 401);
         contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
         setContentPane(contentPane);
         contentPane.setLayout(null);
 
         JComboBox<String> comboBox_1 = new JComboBox<String>();
-        comboBox_1.setBounds(5, 51, 130, 30);
+        comboBox_1.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent arg0) {
+        	}
+        });
+        comboBox_1.setBounds(123, 51, 130, 30);
         contentPane.add(comboBox_1);
 
-        JComboBox<String> comboBox_3 = new JComboBox<String>();
-        comboBox_3.setBounds(145, 51, 130, 30);
-        contentPane.add(comboBox_3);
-
         JComboBox<String> comboBox_2 = new JComboBox<String>();
-        comboBox_2.setBounds(285, 51, 130, 30);
+        comboBox_2.setBounds(289, 51, 130, 30);
         contentPane.add(comboBox_2);
         
         JScrollPane scrollPane = new JScrollPane();
         scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
         scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-        scrollPane.setBounds(5, 116, 424, 185);
+        scrollPane.setBounds(5, 116, 539, 235);
         contentPane.add(scrollPane);
 
         table = new JTable();
@@ -80,32 +84,26 @@ public class DataGUI extends JFrame {
 
         JLabel lblArtist = new JLabel("Filter by Artist");
         lblArtist.setHorizontalAlignment(SwingConstants.CENTER);
-        lblArtist.setBounds(5, 11, 130, 29);
+        lblArtist.setBounds(123, 11, 130, 29);
         contentPane.add(lblArtist);
 
         JLabel lblAlbum = new JLabel("Filter by Album");
         lblAlbum.setHorizontalAlignment(SwingConstants.CENTER);
-        lblAlbum.setBounds(145, 11, 130, 29);
+        lblAlbum.setBounds(289, 11, 130, 29);
         contentPane.add(lblAlbum);
+        comboBox_1.addItem("");
 
-        JLabel lblGenre = new JLabel("Filter by Genre");
-        lblGenre.setHorizontalAlignment(SwingConstants.CENTER);
-        lblGenre.setBounds(285, 11, 130, 29);
-        contentPane.add(lblGenre);
-        comboBox_1.addItem("Artist");
-        comboBox_1.addItem("Album");
-        comboBox_1.addItem("Genre");
-        comboBox_2.addItem("Artist");
-        comboBox_2.addItem("Album");
-        comboBox_2.addItem("Genre");
-        comboBox_3.addItem("Artist");
-        comboBox_3.addItem("Album");
-        comboBox_3.addItem("Genre");
+        comboBox_2.addItem("");
 
         MusicDatabase musicDatabase = new MusicDatabase();
         try {
+        	table.setModel(musicDatabase.tableModelQuery(SongsArtistsAlbums.query_All()));
             //musicDatabase.createAndFillDB();
-            table.setModel(musicDatabase.executeQuery(SongsArtistsAlbums.query_All()));
+        	
+        	musicDatabase.resultSetToColumn(comboBox_2, AlbumsSql.query_Albums());
+        	
+        	musicDatabase.resultSetToColumn(comboBox_1,ArtistsSql.query_Artists());
+           
         } catch (SQLException e) {
             System.out.println("SQL exception when executing query_all");
         }

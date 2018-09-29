@@ -9,7 +9,7 @@ package database;
 public class ArtistsSql {
 
     public static String createTable() {
-        return "CREATE TABLE ARTIST("
+        return "CREATE TABLE ARTISTS("
                 + "ARTIST_ID INT not null primary key "
                 + "GENERATED ALWAYS AS IDENTITY"
                 + "(start with 300, increment by 1),"
@@ -17,7 +17,7 @@ public class ArtistsSql {
     }
 
     public static String fillTable() {
-        return "INSERT INTO ARTIST ("
+        return "INSERT INTO ARTISTS ("
                 + "ARTIST_NAME) VALUES"
                 + "('JAY-Z'),"
                 + "('Eve 6'),"
@@ -28,7 +28,7 @@ public class ArtistsSql {
     }
 
     public static String dropTable() {
-        return "drop TABLE ARTIST";
+        return "drop TABLE ARTISTS";
 
     }
 
@@ -40,7 +40,7 @@ public class ArtistsSql {
     // }
 
     public static String query_All() {
-        return "SELECT * FROM ARTIST";
+        return "SELECT * FROM ARTISTS";
     }
 
 }

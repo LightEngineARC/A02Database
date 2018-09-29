@@ -10,7 +10,7 @@ package database;
  * @author Ashton Chatelain
  *
  */
-public class SongsArtistsAlbum
+public class SongsArtistsAlbums
 {
 
 	    // - - - - - - - - - - - query statements - - - - - - - - - - - - -
@@ -20,10 +20,10 @@ public class SongsArtistsAlbum
 		 *
 		 */
 	    public static String query_All() {
-	        return "SELECT SONGS.TITLE, ARTIST.ARTIST_NAME, ALBUM.ALBUM_NAME "
+	        return "SELECT SONGS.TITLE, ARTISTS.ARTIST_NAME, ALBUMS.ALBUM_NAME "
 	        		+ "FROM SONGS "
-	        		+ "Left join artist on artist.artist_id = songs.artist_id "
-	        		+ "left join album on album.album_id = songs.album_id "
+	        		+ "Left join artists on artists.artist_id = songs.artist_id "
+	        		+ "left join albums on albums.album_id = songs.album_id "
 	        		+ "order by songs.title ASC";
 	    }
 

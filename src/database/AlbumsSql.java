@@ -6,10 +6,10 @@ package database;
  * A02DatabaseApplication
  * Description : (Narrative description, not code)
  */
-public class AlbumSql {
+public class AlbumsSql {
 
     public static String createTable() {
-        return "CREATE TABLE ALBUM("
+        return "CREATE TABLE ALBUMS("
                 + "ALBUM_ID INT not null primary key "
                 + "GENERATED ALWAYS AS IDENTITY "
                 + "(start with 200, increment by 1), "
@@ -20,7 +20,7 @@ public class AlbumSql {
     }
 
     public static String fillTable() {
-        return "INSERT INTO ALBUM ("
+        return "INSERT INTO ALBUMS ("
                 + "ALBUM_NAME, GENRE, RELEASE_YEAR, ARTIST_ID) VALUES"
                 + "('4:44', 'HIP-HOP', 2017, 300),"
                 + "('Horrorscope', 'Rock', 1999, 301),"
@@ -31,7 +31,7 @@ public class AlbumSql {
     }
 
     public static String dropTable() {
-        return "DROP TABLE ALBUM";
+        return "DROP TABLE ALBUMS";
 
     }
 
@@ -43,6 +43,6 @@ public class AlbumSql {
     // }
 
     public static String query_All() {
-        return "SELECT * FROM ALBUM";
+        return "SELECT * FROM ALBUMs";
     }
 }

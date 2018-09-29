@@ -16,12 +16,14 @@ import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JScrollPane;
+import javax.swing.ScrollPaneConstants;
 
 /**
  * @author Ashton Chatelain
  *
  */
 
+@SuppressWarnings("serial")
 public class DataGUI extends JFrame {
     private JPanel contentPane;
     private JTable table;
@@ -55,19 +57,21 @@ public class DataGUI extends JFrame {
         setContentPane(contentPane);
         contentPane.setLayout(null);
 
-        JComboBox<String> comboBox_1 = new JComboBox();
+        JComboBox<String> comboBox_1 = new JComboBox<String>();
         comboBox_1.setBounds(5, 51, 130, 30);
         contentPane.add(comboBox_1);
 
-        JComboBox<String> comboBox_3 = new JComboBox();
+        JComboBox<String> comboBox_3 = new JComboBox<String>();
         comboBox_3.setBounds(145, 51, 130, 30);
         contentPane.add(comboBox_3);
 
-        JComboBox<String> comboBox_2 = new JComboBox();
+        JComboBox<String> comboBox_2 = new JComboBox<String>();
         comboBox_2.setBounds(285, 51, 130, 30);
         contentPane.add(comboBox_2);
         
         JScrollPane scrollPane = new JScrollPane();
+        scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+        scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         scrollPane.setBounds(5, 116, 424, 185);
         contentPane.add(scrollPane);
 
@@ -101,7 +105,7 @@ public class DataGUI extends JFrame {
         MusicDatabase musicDatabase = new MusicDatabase();
         try {
             //musicDatabase.createAndFillDB();
-            table.setModel(musicDatabase.executeQuery(SongsArtistsAlbum.query_All()));
+            table.setModel(musicDatabase.executeQuery(SongsArtistsAlbums.query_All()));
         } catch (SQLException e) {
             System.out.println("SQL exception when executing query_all");
         }

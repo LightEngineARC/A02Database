@@ -23,12 +23,12 @@ public class MusicDatabase {
 
     }
 
-    public static void createAndFillDB() throws SQLException {
+    public void createAndFillDB() throws SQLException {
         executeSqlStatement(ArtistsSql.createTable(), ArtistsSql.fillTable(), SongsSql.createTable());
-        executeSqlStatement(AlbumSql.createTable(), AlbumSql.fillTable(), SongsSql.fillTable());
+        executeSqlStatement(AlbumsSql.createTable(), AlbumsSql.fillTable(), SongsSql.fillTable());
     }
 
-    private static void executeSqlStatement(String... sqlStatements) throws SQLException {
+    private void executeSqlStatement(String... sqlStatements) throws SQLException {
         try (Connection connection = DriverManager.getConnection("jdbc:derby:MusicDatabase;create=true");
              // attribute "...;create=true" removed after databaseold creation
              Statement statement = connection.createStatement()) {
@@ -161,8 +161,14 @@ public class MusicDatabase {
     public static void main(String[] args) throws SQLException {
         //TODO use for testing createAndFillDB();
         MusicDatabase mDb = new MusicDatabase();
+        //TODO DO THIS ONLY ONCE 
+        mDb.executeSqlStatement("drop table artist", "drop table songs","drop table album");
+        
+       // mDb.createAndFillDB();
+        mDb.executeSqlStatement(AlbumsSql.dropTable(), AlbumsSql.createTable(), AlbumsSql.fillTable());
 
-        mDb.executeQueries(SongsSql.query_All(), ArtistsSql.query_All(), AlbumSql.query_All());
+
+        mDb.executeQueries(SongsSql.query_All(), ArtistsSql.query_All(), AlbumsSql.query_All());
 
         System.out.println("done\n");
     }

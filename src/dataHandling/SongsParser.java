@@ -10,11 +10,11 @@ package dataHandling;
 public class SongsParser extends Parser {
     private final String format = "TITLE, LENGTH, ARTIST_ID, ALBUM_ID";
 
-    public SongsParser() {
-        super("album");
+    private SongsParser() {
+        super("albums");
     }
 
-    protected void parseData() {
+    private void parseData() {
         super.parseData(format);
     }
 

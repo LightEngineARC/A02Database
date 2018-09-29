@@ -1,20 +1,20 @@
 package dataHandling;
 
 /**
- * Specifies format for album table and utilizes parent class to parse song data from data_wanted/album
+ * Specifies format for albums table and utilizes parent class to parse song data from data_wanted/albums
  * FIXME needs getLineData() to be finished in order to function, currently will throw exceptions
  * <p>
  *
  * @author Alec Mills
  */
-public class AlbumParser extends Parser {
+public class AlbumsParser extends Parser {
     private final String format = "ALBUM_NAME, GENRE, RELEASE_YEAR, ARTIST_ID";
 
-    public AlbumParser() {
+    private AlbumsParser() {
         super("songs");
     }
 
-    protected void parseData() {
+    private void parseData() {
         super.parseData(format);
     }
 
@@ -35,6 +35,6 @@ public class AlbumParser extends Parser {
     }
 
     public static void main(String[] args) {
-        new AlbumParser().parseData();
+        new AlbumsParser().parseData();
     }
 }

@@ -101,7 +101,7 @@ public class DataGUI extends JFrame {
         MusicDatabase musicDatabase = new MusicDatabase();
         try {
             //musicDatabase.createAndFillDB();
-            table.setModel(musicDatabase.executeQuery(ArtistsSql.query_All()));
+            table.setModel(musicDatabase.executeQuery(SongsArtistsAlbum.query_All()));
         } catch (SQLException e) {
             System.out.println("SQL exception when executing query_all");
         }

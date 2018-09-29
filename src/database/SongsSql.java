@@ -45,5 +45,8 @@ public class SongsSql {
     public static String query_All() {
         return "SELECT * FROM SONGS";
     }
+    public static String query_Artists() {
+        return "SELECT TITLE as COL FROM ARTISTS";
+    }
 
 }

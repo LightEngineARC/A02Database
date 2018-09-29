@@ -20,7 +20,7 @@ public class SongsArtistsAlbums
 		 *
 		 */
 	    public static String query_All() {
-	        return "SELECT SONGS.TITLE, ARTISTS.ARTIST_NAME, ALBUMS.ALBUM_NAME "
+	        return "SELECT SONGS.TITLE, ARTISTS.ARTIST_NAME as ARTIST, ALBUMS.ALBUM_NAME as ALBUM "
 	        		+ "FROM SONGS "
 	        		+ "Left join artists on artists.artist_id = songs.artist_id "
 	        		+ "left join albums on albums.album_id = songs.album_id "

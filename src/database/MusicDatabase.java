@@ -159,15 +159,48 @@ public class MusicDatabase {
      * TEST CLIENT
      */
     public static void main(String[] args) throws SQLException {
-        //TODO use for testing createAndFillDB();
-        MusicDatabase mDb = new MusicDatabase();
-        //TODO DO THIS ONLY ONCE 
-        mDb.executeSqlStatement("drop table artist", "drop table songs","drop table album");
         
-       // mDb.createAndFillDB();
-        mDb.executeSqlStatement(AlbumsSql.dropTable(), AlbumsSql.createTable(), AlbumsSql.fillTable());
-
-
+        MusicDatabase mDb = new MusicDatabase();
+        
+        //TODO TEST this for all tables. This will purge all old and
+        // new tables, create them, and query all on each of them.
+        
+        //ORIGINAL NAMES
+        try {
+        	mDb.executeSqlStatement("drop table album");
+        }catch(SQLException e) {
+        	System.out.println("table ALBUM does not exist\n");
+        }
+        try {
+        	mDb.executeSqlStatement("drop table artist");
+        }catch(SQLException e) {
+        	System.out.println("table ARTIST does not exist\n");
+        }
+        try {
+        	mDb.executeSqlStatement("drop table songs");
+        }catch(SQLException e) {
+        	System.out.println("table SONGS does not exist\n");
+        }
+        
+        //PLURALIZED TABLES
+        try {
+        	mDb.executeSqlStatement(AlbumsSql.dropTable());
+        } catch(SQLException e) {
+        	
+        }
+        try {
+        	mDb.executeSqlStatement(ArtistsSql.dropTable());
+        } catch(SQLException e) {
+        	
+        }
+        try {
+        	mDb.executeSqlStatement(SongsSql.dropTable());
+        } catch(SQLException e) {
+        	
+        }
+        
+        
+        mDb.createAndFillDB();
         mDb.executeQueries(SongsSql.query_All(), ArtistsSql.query_All(), AlbumsSql.query_All());
 
         System.out.println("done\n");

@@ -29,7 +29,7 @@ public class MusicDatabase {
         executeSqlStatement(AlbumsSql.createTable(), AlbumsSql.fillTable(), SongsSql.fillTable());
     }
 
-    private void executeSqlStatement(String... sqlStatements) throws SQLException {
+    public void executeSqlStatement(String... sqlStatements) throws SQLException {
         try (Connection connection = DriverManager.getConnection("jdbc:derby:MusicDatabase;create=true");
              // attribute "...;create=true" removed after databaseold creation
              Statement statement = connection.createStatement()) {
@@ -211,21 +211,24 @@ public class MusicDatabase {
         try {
             mDb.executeSqlStatement(AlbumsSql.dropTable());
         } catch (SQLException e) {
+            System.out.println();
 
         }
         try {
             mDb.executeSqlStatement(ArtistsSql.dropTable());
         } catch (SQLException e) {
+            System.out.println();
 
         }
         try {
             mDb.executeSqlStatement(SongsSql.dropTable());
         } catch (SQLException e) {
+            System.out.println();
 
         }
 
         mDb.createAndFillDB();
-        mDb.executeQueries(SongsSql.query_All(), ArtistsSql.query_All(), AlbumsSql.query_All());
+        mDb.executeQueries(SongsSql.query_All(), ArtistsSql.query_All(), AlbumsSql.query_All(), SongsArtistsAlbums.query_Artist_String("Eve 6"));
 
         System.out.println("done\n");
     }

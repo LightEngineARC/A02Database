@@ -60,17 +60,36 @@ public class DataGUI extends JFrame {
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
         setContentPane(contentPane);
         contentPane.setLayout(null);
+        MusicDatabase musicDatabase = new MusicDatabase();
 
         JComboBox<String> artistComboBox = new JComboBox<String>();
         artistComboBox.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
                 //TODO filter songs with this artist
+                String filterArtist = (String) artistComboBox.getSelectedItem();
+                try {
+                    table.setModel(musicDatabase.tableModelQuery(SongsArtistsAlbums.query_Artist_String(filterArtist)));
+                } catch(SQLException e){
+                    System.out.println("SQL exception when filtering by artist");
+                }
+
             }
         });
         artistComboBox.setBounds(123, 51, 130, 30);
         contentPane.add(artistComboBox);
 
         JComboBox<String> albumComboBox = new JComboBox<String>();
+        albumComboBox.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent arg0) {
+                //TODO filter songs with this album
+                String filterAlbum = (String) albumComboBox.getSelectedItem();
+                try {
+                    table.setModel(musicDatabase.tableModelQuery(SongsArtistsAlbums.query_Album_String(filterAlbum)));
+                } catch(SQLException e){
+                    System.out.println("SQL exception when filtering by Album");
+                }
+            }
+        });
         albumComboBox.setBounds(289, 51, 130, 30);
         contentPane.add(albumComboBox);
 
@@ -96,7 +115,7 @@ public class DataGUI extends JFrame {
 
         albumComboBox.addItem("");
 
-        MusicDatabase musicDatabase = new MusicDatabase();
+
         try {
             table.setModel(musicDatabase.tableModelQuery(SongsArtistsAlbums.query_All()));
             //musicDatabase.createAndFillDB();

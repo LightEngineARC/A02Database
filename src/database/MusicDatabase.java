@@ -2,13 +2,7 @@ package database;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
 public class MusicDatabase {
 
@@ -58,15 +52,10 @@ public class MusicDatabase {
     }
 
     /**
-     * Method : printHeader
-     * <p>
-     * Purpose : prints column headers and separated by two spaces and adds a line
-     * of dashes
+     * Prints column headers and separated by two spaces and adds a line of dashes
      *
-     * @param : metadata
-     * @throws : SQLException
-     *           <p>
-     *           **************************************************
+     * @param metaData
+     * @throws SQLException
      */
     private static void printHeader(ResultSetMetaData metaData) throws SQLException {
         int columnCount = metaData.getColumnCount();
@@ -192,14 +181,14 @@ public class MusicDatabase {
 
         // ORIGINAL NAMES
         try {
-            mDb.executeSqlStatement("drop table album");
+            mDb.executeSqlStatement("drop table albums");
         } catch (SQLException e) {
-            System.out.println("table ALBUM does not exist\n");
+            System.out.println("table ALBUMS does not exist\n");
         }
         try {
-            mDb.executeSqlStatement("drop table artist");
+            mDb.executeSqlStatement("drop table artists");
         } catch (SQLException e) {
-            System.out.println("table ARTIST does not exist\n");
+            System.out.println("table ARTISTS does not exist\n");
         }
         try {
             mDb.executeSqlStatement("drop table songs");

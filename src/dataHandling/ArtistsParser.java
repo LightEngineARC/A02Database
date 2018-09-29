@@ -1,19 +1,19 @@
 package dataHandling;
 
 /**
- * Specifies format for artist table and utilizes parent class to parse song data from data_wanted/artist
+ * Specifies format for artists table and utilizes parent class to parse song data from data_wanted/artists
  * <p>
  *
  * @author Alec Mills
  */
-public class ArtistParser extends Parser {
+public class ArtistsParser extends Parser {
     private final String format = "ARTIST_NAME";
 
-    public ArtistParser() {
-        super("artist");
+    private ArtistsParser() {
+        super("artists");
     }
 
-    protected void parseData() {
+    private void parseData() {
         super.parseData(format);
     }
 
@@ -31,6 +31,6 @@ public class ArtistParser extends Parser {
     }
 
     public static void main(String[] args) {
-        new ArtistParser().parseData();
+        new ArtistsParser().parseData();
     }
 }

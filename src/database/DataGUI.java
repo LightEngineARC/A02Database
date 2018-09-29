@@ -1,31 +1,18 @@
+package database;
+
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.SQLException;
+
 /**
  * @author Ashton Chatelain
  * <p>
  * A02Database
  * Description : (Narrative description, not code)
  */
-package database;
-
-import java.awt.*;
-import java.sql.SQLException;
-
-import javax.swing.JComboBox;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTable;
-import javax.swing.SwingConstants;
-import javax.swing.border.EmptyBorder;
-import javax.swing.JScrollPane;
-import javax.swing.ScrollPaneConstants;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-
-/**
- * @author Ashton Chatelain
- *
- */
-
 @SuppressWarnings("serial")
 public class DataGUI extends JFrame {
     private JPanel contentPane;
@@ -62,15 +49,15 @@ public class DataGUI extends JFrame {
         contentPane.setLayout(null);
         MusicDatabase musicDatabase = new MusicDatabase();
 
-        JComboBox<String> artistComboBox = new JComboBox<String>();
+        JComboBox<String> artistComboBox = new JComboBox<>();
         artistComboBox.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
-                //TODO filter songs with this artist
+                //TODO filter songs with this artists
                 String filterArtist = (String) artistComboBox.getSelectedItem();
                 try {
                     table.setModel(musicDatabase.tableModelQuery(SongsArtistsAlbums.query_Artist_String(filterArtist)));
                 } catch(SQLException e){
-                    System.out.println("SQL exception when filtering by artist");
+                    System.out.println("SQL exception when filtering by artists");
                 }
 
             }
@@ -78,10 +65,10 @@ public class DataGUI extends JFrame {
         artistComboBox.setBounds(123, 51, 130, 30);
         contentPane.add(artistComboBox);
 
-        JComboBox<String> albumComboBox = new JComboBox<String>();
+        JComboBox<String> albumComboBox = new JComboBox<>();
         albumComboBox.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
-                //TODO filter songs with this album
+                //TODO filter songs with this albums
                 String filterAlbum = (String) albumComboBox.getSelectedItem();
                 try {
                     table.setModel(musicDatabase.tableModelQuery(SongsArtistsAlbums.query_Album_String(filterAlbum)));

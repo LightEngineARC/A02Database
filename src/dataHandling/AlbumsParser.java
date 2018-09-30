@@ -1,17 +1,17 @@
 package dataHandling;
 
 /**
- * Specifies format for albums table and utilizes parent class to parse song data from data_wanted/albums
+ * Specifies format for albums table and utilizes parent class to parse song data from dirty_data/albums
  * FIXME needs getLineData() to be finished in order to function, currently will throw exceptions
  * <p>
  *
  * @author Alec Mills
  */
 public class AlbumsParser extends Parser {
-    private final String format = "ALBUM_NAME, GENRE, RELEASE_YEAR, ARTIST_ID";
+    private final String format = "id, name";
 
     private AlbumsParser() {
-        super("songs");
+        super("albums.tsv");
     }
 
     private void parseData() {
@@ -26,12 +26,10 @@ public class AlbumsParser extends Parser {
      */
     @Override
     protected String[] getLineData(String[] columns) {
-        //FIXME
-//        String[] result = new String[] {
-//                columns[2],
-//        };
-//        return result;
-        return null;
+        String[] result = new String[]{
+                columns[0], columns[2]
+        };
+        return result;
     }
 
     public static void main(String[] args) {

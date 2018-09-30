@@ -2,7 +2,10 @@ package database;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.io.File;
+import java.io.IOException;
 import java.sql.*;
+import java.util.Scanner;
 
 public class MusicDatabase {
 
@@ -11,10 +14,6 @@ public class MusicDatabase {
 
     public ResultSetMetaData getMetaData() {
         return metaData;
-    }
-
-    public MusicDatabase() {
-
     }
 
     public void createAndFillDB() throws SQLException {
@@ -167,6 +166,26 @@ public class MusicDatabase {
             //the exception for error code 45000 indicates successful shutdown and can safely be ignored
             if (e.getErrorCode() != 45000)
                 e.printStackTrace();
+    /**
+     * //TODO describe & test
+     *
+     * @param path file path
+     * @return statements found
+     */
+    public String[] parseSQL(String path) {
+        try (Scanner in = new Scanner(new File(path))) {
+            StringBuilder sb = new StringBuilder();
+
+            while (in.hasNextLine()) {
+                sb.append(in.nextLine());
+            }
+
+            String[] statements = sb.toString().split(";");
+            return statements;
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
         }
     }
 
@@ -182,48 +201,54 @@ public class MusicDatabase {
 
         MusicDatabase mDb = new MusicDatabase();
 
-        // TODO TEST this for all tables. This will purge all old and
-        // new tables, create them, and query all on each of them.
-
-        // ORIGINAL NAMES
-        try {
-            mDb.executeSqlStatement("drop table albums");
-        } catch (SQLException e) {
-            System.out.println("table ALBUMS does not exist\n");
-        }
-        try {
-            mDb.executeSqlStatement("drop table artists");
-        } catch (SQLException e) {
-            System.out.println("table ARTISTS does not exist\n");
-        }
-        try {
-            mDb.executeSqlStatement("drop table songs");
-        } catch (SQLException e) {
-            System.out.println("table SONGS does not exist\n");
-        }
-
-        // PLURALIZED TABLES
-        try {
-            mDb.executeSqlStatement(AlbumsSql.dropTable());
-        } catch (SQLException e) {
+//        // TODO TEST this for all tables. This will purge all old and
+//        // new tables, create them, and query all on each of them.
+//
+//        // ORIGINAL NAMES
+//        try {
+//            mDb.executeSqlStatement("drop table albums");
+//        } catch (SQLException e) {
+//            System.out.println("table ALBUMS does not exist\n");
+//        }
+//        try {
+//            mDb.executeSqlStatement("drop table artists");
+//        } catch (SQLException e) {
+//            System.out.println("table ARTISTS does not exist\n");
+//        }
+//        try {
+//            mDb.executeSqlStatement("drop table songs");
+//        } catch (SQLException e) {
+//            System.out.println("table SONGS does not exist\n");
+//        }
+//
+//        // PLURALIZED TABLES
+//        try {
+//            mDb.executeSqlStatement(AlbumsSql.dropTable());
+//        } catch (SQLException e) {
+//            System.out.println();
+//
+//        }
+//        try {
+//            mDb.executeSqlStatement(ArtistsSql.dropTable());
+//        } catch (SQLException e) {
+//            System.out.println();
+//
+//        }
+//        try {
+//            mDb.executeSqlStatement(SongsSql.dropTable());
+//        } catch (SQLException e) {
+//            System.out.println();
+//
+//        }
+//
+//        mDb.createAndFillDB();
+//        mDb.executeQueries(SongsSql.query_All(), ArtistsSql.query_All(), AlbumsSql.query_All(), SongsArtistsAlbums.query_Artist_String("Eve 6"));
+        for (String statement : mDb.parseSQL("src/dataHandling/CreateTables.sql")) {
+            System.out.println("EXECUTING: ");
+            System.out.println(statement);
             System.out.println();
-
+            mDb.executeSqlStatement(statement);
         }
-        try {
-            mDb.executeSqlStatement(ArtistsSql.dropTable());
-        } catch (SQLException e) {
-            System.out.println();
-
-        }
-        try {
-            mDb.executeSqlStatement(SongsSql.dropTable());
-        } catch (SQLException e) {
-            System.out.println();
-
-        }
-
-        mDb.createAndFillDB();
-        mDb.executeQueries(SongsSql.query_All(), ArtistsSql.query_All(), AlbumsSql.query_All(), SongsArtistsAlbums.query_Artist_String("Eve 6"));
 
         System.out.println("done\n");
     }

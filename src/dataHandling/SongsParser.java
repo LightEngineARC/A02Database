@@ -1,7 +1,7 @@
 package dataHandling;
 
 /**
- * Specifies format for songs table and utilizes parent class to parse song data from data_wanted/songs
+ * Specifies format for songs table and utilizes parent class to parse song data from dirty_data/songs
  * FIXME needs getLineData() to be finished in order to function, currently will throw exceptions
  * <p>
  *
@@ -11,7 +11,7 @@ public class SongsParser extends Parser {
     private final String format = "TITLE, LENGTH, ARTIST_ID, ALBUM_ID";
 
     private SongsParser() {
-        super("albums");
+        super("songs.tsv");
     }
 
     private void parseData() {

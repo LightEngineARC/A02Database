@@ -25,7 +25,7 @@ public abstract class Parser {
     protected void parseData(String format) {
         try {
             //data to format
-            File dirtyData = new File("data/data_wanted/" + fileName);
+            File dirtyData = new File("data/dirty_data/" + fileName);
             Scanner input = new Scanner(dirtyData);
 
             //where to store formatted data

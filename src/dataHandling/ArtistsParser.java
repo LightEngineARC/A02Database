@@ -1,16 +1,16 @@
 package dataHandling;
 
 /**
- * Specifies format for artists table and utilizes parent class to parse song data from data_wanted/artists
+ * Specifies format for artists table and utilizes parent class to parse song data from dirty_data/artists
  * <p>
  *
  * @author Alec Mills
  */
 public class ArtistsParser extends Parser {
-    private final String format = "ARTIST_NAME";
+    private final String format = "id, name, comment";
 
     private ArtistsParser() {
-        super("artists");
+        super("artists.tsv");
     }
 
     private void parseData() {
@@ -26,7 +26,7 @@ public class ArtistsParser extends Parser {
     @Override
     protected String[] getLineData(String[] columns) {
         return new String[]{
-                columns[3]
+                columns[0], columns[2], columns[13]
         };
     }
 

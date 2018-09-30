@@ -14,7 +14,6 @@ public class AlbumsSql {
                 + "GENERATED ALWAYS AS IDENTITY "
                 + "(start with 200, increment by 1), "
                 + "ALBUM_NAME varchar(255), "
-                + "GENRE varchar(255),"
                 + "RELEASE_YEAR int,"
                 + "ARTIST_ID INT)";
     }

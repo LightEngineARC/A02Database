@@ -20,7 +20,7 @@ public class DataGUI extends JFrame {
     private JPanel contentPane;
     private JTable table;
     private boolean isFiltered = false;
-    private JTextField textField;
+    private JTextField textFieldSearch;
 
     /**
      * Launch the application.
@@ -45,7 +45,7 @@ public class DataGUI extends JFrame {
      */
     public DataGUI() {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBounds(100, 100, 570, 401);
+        setBounds(100, 100, 720, 475);
         contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
         setContentPane(contentPane);
@@ -65,7 +65,7 @@ public class DataGUI extends JFrame {
 
             }
         });
-        artistComboBox.setBounds(257, 51, 130, 30);
+        artistComboBox.setBounds(274, 51, 130, 30);
         contentPane.add(artistComboBox);
 
         JComboBox<String> albumComboBox = new JComboBox<>();
@@ -80,13 +80,13 @@ public class DataGUI extends JFrame {
                 }
             }
         });
-        albumComboBox.setBounds(397, 51, 130, 30);
+        albumComboBox.setBounds(414, 51, 130, 30);
         contentPane.add(albumComboBox);
 
         JScrollPane scrollPane = new JScrollPane();
         scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
         scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-        scrollPane.setBounds(5, 116, 539, 235);
+        scrollPane.setBounds(5, 116, 689, 309);
         contentPane.add(scrollPane);
 
         table = new JTable();
@@ -94,22 +94,22 @@ public class DataGUI extends JFrame {
 
         JLabel lblArtist = new JLabel("Filter by Artist");
         lblArtist.setHorizontalAlignment(SwingConstants.CENTER);
-        lblArtist.setBounds(257, 11, 130, 29);
+        lblArtist.setBounds(274, 11, 130, 29);
         contentPane.add(lblArtist);
 
         JLabel lblAlbum = new JLabel("Filter by Album");
         lblAlbum.setHorizontalAlignment(SwingConstants.CENTER);
-        lblAlbum.setBounds(397, 11, 130, 29);
+        lblAlbum.setBounds(414, 11, 130, 29);
         contentPane.add(lblAlbum);
         artistComboBox.addItem("");
 
         albumComboBox.addItem("");
         
-        textField = new JTextField();
-        textField.addKeyListener(new KeyAdapter() {
+        textFieldSearch = new JTextField();
+        textFieldSearch.addKeyListener(new KeyAdapter() {
         	@Override
         	public void keyTyped(KeyEvent arg0) {
-        		if(!textField.getText().contains(",") || !textField.getText().contains(";") || !textField.getText().contains("(") );{
+        		if(!textFieldSearch.getText().contains(",") || !textFieldSearch.getText().contains(";") || !textFieldSearch.getText().contains("(") );{
         			try
 					{
                         search(musicDatabase);
@@ -120,11 +120,11 @@ public class DataGUI extends JFrame {
         		}
         	}
         });
-        textField.setToolTipText("Search");
-        textField.addActionListener(new ActionListener() {
+        textFieldSearch.setToolTipText("Search");
+        textFieldSearch.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent arg0) {
         		//TODO add action listener to search for songs by entry
-        		if(!textField.getText().contains(",") || !textField.getText().contains(";") || !textField.getText().contains("(") );{
+        		if(!textFieldSearch.getText().contains(",") || !textFieldSearch.getText().contains(";") || !textFieldSearch.getText().contains("(") );{
         			try
 					{
 						search(musicDatabase);
@@ -135,9 +135,9 @@ public class DataGUI extends JFrame {
         		}
         	}
         });
-        textField.setBounds(47, 56, 185, 20);
-        contentPane.add(textField);
-        textField.setColumns(10);
+        textFieldSearch.setBounds(5, 56, 185, 20);
+        contentPane.add(textFieldSearch);
+        textFieldSearch.setColumns(10);
 
 
         try {
@@ -146,6 +146,19 @@ public class DataGUI extends JFrame {
 
             musicDatabase.resultSetToColumn(albumComboBox, AlbumsSql.query_Albums());
             musicDatabase.resultSetToColumn(artistComboBox, ArtistsSql.query_Artists());
+            
+            JRadioButton rdbtnSong = new JRadioButton("Song");
+            rdbtnSong.setSelected(true);
+            rdbtnSong.setBounds(5, 86, 65, 23);
+            contentPane.add(rdbtnSong);
+            
+            JRadioButton rdbtnArtist = new JRadioButton("Artist");
+            rdbtnArtist.setBounds(72, 86, 65, 23);
+            contentPane.add(rdbtnArtist);
+            
+            JRadioButton rdbtnAlbum = new JRadioButton("Album");
+            rdbtnAlbum.setBounds(139, 86, 65, 23);
+            contentPane.add(rdbtnAlbum);
             
            
 
@@ -156,7 +169,7 @@ public class DataGUI extends JFrame {
 
     }
     public void search(MusicDatabase musicDatabase) throws SQLException {
-        table.setModel(musicDatabase.tableModelQuery(SongsArtistsAlbums.query_Song_String(textField.getText())));
+        table.setModel(musicDatabase.tableModelQuery(SongsArtistsAlbums.query_Song_String(textFieldSearch.getText())));
     }
 }
 

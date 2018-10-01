@@ -1,5 +1,7 @@
 package database;
 
+import dataHandling.SQLFactory;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.io.File;
@@ -12,6 +14,14 @@ public class MusicDatabase {
     private ResultSet results;
     private ResultSetMetaData metaData;
 
+    //FIXME should probably just make alternate constructors, or pass boolean values into the constructor?
+    //below are used for toggling between database creation or not
+//    private static boolean create = true;
+    private static boolean create = false;
+    //below are used for toggling between database filling or not
+    private static boolean fill = true;
+//    private static boolean fill = false;
+
     public ResultSetMetaData getMetaData() {
         return metaData;
     }
@@ -22,8 +32,8 @@ public class MusicDatabase {
     }
 
     public void executeSqlStatement(String... sqlStatements) throws SQLException {
-        try (Connection connection = DriverManager.getConnection("jdbc:derby:MusicDatabase;create=true");
-             // attribute "...;create=true" removed after databaseold creation
+        try (Connection connection = DriverManager.getConnection("jdbc:derby:" +
+                ((create) ? "MusicDatabase;create=true" : "MusicDatabase"));
              Statement statement = connection.createStatement()) {
             for (String sqlStatement : sqlStatements) {
                 statement.execute(sqlStatement);
@@ -168,6 +178,7 @@ public class MusicDatabase {
                 e.printStackTrace();
     /**
      * //TODO describe & test
+     * //FIXME known issue: comments in a sql file cause unrecoverable errors
      *
      * @param path file path
      * @return statements found
@@ -177,7 +188,10 @@ public class MusicDatabase {
             StringBuilder sb = new StringBuilder();
 
             while (in.hasNextLine()) {
-                sb.append(in.nextLine());
+                String line = in.nextLine();
+                //FIXME Ignore comments, below doesn't work
+//                if (line.length() > 0 && line.charAt(0) != '-')
+                sb.append(line);
             }
 
             String[] statements = sb.toString().split(";");
@@ -189,6 +203,13 @@ public class MusicDatabase {
         }
     }
 
+    public void dropTable(String table) {
+        try {
+            executeSqlStatement("DROP TABLE " + table);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
     /*
      *
      *
@@ -243,13 +264,23 @@ public class MusicDatabase {
 //
 //        mDb.createAndFillDB();
 //        mDb.executeQueries(SongsSql.query_All(), ArtistsSql.query_All(), AlbumsSql.query_All(), SongsArtistsAlbums.query_Artist_String("Eve 6"));
-        for (String statement : mDb.parseSQL("src/dataHandling/CreateTables.sql")) {
-            System.out.println("EXECUTING: ");
-            System.out.println(statement);
-            System.out.println();
-            mDb.executeSqlStatement(statement);
+        if (create) {
+            for (String statement : mDb.parseSQL("src/dataHandling/CreateTables.sql")) {
+                System.out.println("EXECUTING: ");
+                System.out.println(statement);
+                System.out.println();
+                mDb.executeSqlStatement(statement);
+            }
+            System.out.println("Finished creation.");
         }
+        else
+            System.out.println("Already created\n");
 
-        System.out.println("done\n");
+        if (fill) {
+            System.out.println("Filling tables. . .");
+            SQLFactory.main(new String[]{});
+        }
+        else
+            System.out.println("Already filled\n");
     }
 }

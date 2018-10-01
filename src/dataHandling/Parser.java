@@ -22,7 +22,7 @@ public abstract class Parser {
     /**
      * parses data from a known format and converts it to INSERT statement of sql
      */
-    protected void parseData(String format) {
+    public void parseData(String format) {
         try {
             //data to format
             File dirtyData = new File("data/dirty_data/" + fileName);
@@ -57,16 +57,22 @@ public abstract class Parser {
                     String column = escapeQuotes(columns[i]);
                     sb = new StringBuilder();
                     //add single quotes to string values
-                    if (Character.isAlphabetic(column.charAt(0)))
-                        sb.append('\'' + column + '\'');
-                        //don't add single quotes for ints
+                    //can receive null values in some cases, e.g. songs.length
+                    if (column.length() > 0) {
+                        if (Character.isAlphabetic(column.charAt(0)))
+                            sb.append('\'' + column + '\'');
+                            //don't add single quotes for ints
+                        else
+                            sb.append(column);
+                        //we need commas on all but the last value in a record
+                        if (i < columns.length - 1)
+                            sb.append(", ");
+                        write.write(sb.toString());
+                    }
                     else
-                        sb.append(column);
-                    //we need commas on all but the last value in a record
-                    if (i < columns.length - 1)
-                        sb.append(", ");
+                        write.write("null");
                 }
-                write.write(sb.toString() + "),\n");
+                write.write("),\n");
                 write.flush();
             }
 
@@ -100,4 +106,6 @@ public abstract class Parser {
      * @return String[] of desired column values in order
      */
     protected abstract String[] getLineData(String[] columns);
+
+    public abstract String getFormat();
 }

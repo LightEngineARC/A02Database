@@ -10,11 +10,11 @@ package dataHandling;
 public class AlbumsParser extends Parser {
     private final String format = "id, name";
 
-    private AlbumsParser() {
-        super("albums.tsv");
+    public AlbumsParser() {
+        super("albums");
     }
 
-    private void parseData() {
+    public void parseData() {
         super.parseData(format);
     }
 
@@ -27,12 +27,13 @@ public class AlbumsParser extends Parser {
     @Override
     protected String[] getLineData(String[] columns) {
         String[] result = new String[]{
-                columns[0], columns[2]
+                columns[0], //id
+                columns[2] //name
         };
         return result;
     }
 
-    public static void main(String[] args) {
-        new AlbumsParser().parseData();
+    public String getFormat() {
+        return format;
     }
 }

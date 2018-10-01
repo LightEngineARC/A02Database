@@ -7,13 +7,13 @@ package dataHandling;
  * @author Alec Mills
  */
 public class ArtistsParser extends Parser {
-    private final String format = "id, name, comment";
+    private final String format = "id, name";
 
-    private ArtistsParser() {
-        super("artists.tsv");
+    public ArtistsParser() {
+        super("artists");
     }
 
-    private void parseData() {
+    public void parseData() {
         super.parseData(format);
     }
 
@@ -26,11 +26,12 @@ public class ArtistsParser extends Parser {
     @Override
     protected String[] getLineData(String[] columns) {
         return new String[]{
-                columns[0], columns[2], columns[13]
+                columns[0], //id
+                columns[2], //name
         };
     }
 
-    public static void main(String[] args) {
-        new ArtistsParser().parseData();
+    public String getFormat() {
+        return format;
     }
 }

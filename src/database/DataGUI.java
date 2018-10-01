@@ -19,8 +19,10 @@ import java.awt.event.KeyEvent;
 public class DataGUI extends JFrame {
     private JPanel contentPane;
     private JTable table;
-    private boolean isFiltered = false;
     private JTextField textFieldSearch;
+    private JRadioButton rdbtnSong = new JRadioButton("Song");
+    private JRadioButton rdbtnArtist = new JRadioButton("Artist");
+    private JRadioButton rdbtnAlbum = new JRadioButton("Album");
 
     /**
      * Launch the application.
@@ -101,6 +103,17 @@ public class DataGUI extends JFrame {
         lblAlbum.setHorizontalAlignment(SwingConstants.CENTER);
         lblAlbum.setBounds(414, 11, 130, 29);
         contentPane.add(lblAlbum);
+
+        rdbtnSong.setSelected(true);
+        rdbtnSong.setBounds(5, 86, 65, 23);
+        contentPane.add(rdbtnSong);
+
+
+        rdbtnArtist.setBounds(72, 86, 65, 23);
+        contentPane.add(rdbtnArtist);
+
+        rdbtnAlbum.setBounds(139, 86, 65, 23);
+        contentPane.add(rdbtnAlbum);
         artistComboBox.addItem("");
 
         albumComboBox.addItem("");
@@ -147,18 +160,7 @@ public class DataGUI extends JFrame {
             musicDatabase.resultSetToColumn(albumComboBox, AlbumsSql.query_Albums());
             musicDatabase.resultSetToColumn(artistComboBox, ArtistsSql.query_Artists());
             
-            JRadioButton rdbtnSong = new JRadioButton("Song");
-            rdbtnSong.setSelected(true);
-            rdbtnSong.setBounds(5, 86, 65, 23);
-            contentPane.add(rdbtnSong);
-            
-            JRadioButton rdbtnArtist = new JRadioButton("Artist");
-            rdbtnArtist.setBounds(72, 86, 65, 23);
-            contentPane.add(rdbtnArtist);
-            
-            JRadioButton rdbtnAlbum = new JRadioButton("Album");
-            rdbtnAlbum.setBounds(139, 86, 65, 23);
-            contentPane.add(rdbtnAlbum);
+
             
            
 
@@ -169,7 +171,19 @@ public class DataGUI extends JFrame {
 
     }
     public void search(MusicDatabase musicDatabase) throws SQLException {
-        table.setModel(musicDatabase.tableModelQuery(SongsArtistsAlbums.query_Song_String(textFieldSearch.getText())));
+        if(rdbtnSong.isSelected()) {
+            table.setModel(musicDatabase.tableModelQuery(SongsArtistsAlbums.query_Song_String(textFieldSearch.getText())));
+        }
+
+        if(rdbtnArtist.isSelected()){
+            //TODO search by artist
+            table.setModel(musicDatabase.tableModelQuery(SongsArtistsAlbums.query_Artist_String(textFieldSearch.getText())));
+        }
+        if(rdbtnAlbum.isSelected()) {
+            //TODO search by album
+            table.setModel(musicDatabase.tableModelQuery(SongsArtistsAlbums.query_Album_String(textFieldSearch.getText())));
+        }
+
     }
 }
 

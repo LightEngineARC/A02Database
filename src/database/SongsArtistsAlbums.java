@@ -43,7 +43,7 @@ public class SongsArtistsAlbums {
                 + "FROM SONGS "
                 + "Left join artists on artists.artist_id = songs.artist_id "
                 + "left join albums on albums.album_id = songs.album_id "
-                + "WHERE albums.album_name = '"+album+"' "
+                + "WHERE UPPER(ALBUMS.ALBUM_NAME) LIKE UPPER('" + album + "%') "
                 + "order by songs.title ASC";
     }
 
@@ -55,7 +55,7 @@ public class SongsArtistsAlbums {
                 + "FROM SONGS "
                 + "Left join artists on artists.artist_id = songs.artist_id "
                 + "left join albums on albums.album_id = songs.album_id "
-                + "WHERE ARTISTS.artist_name = '"+artist+"' "
+                + "WHERE UPPER(ARTISTS.ARTIST_NAME) LIKE UPPER('" + artist + "%') "
                 + "order by songs.title ASC";
     }
 

@@ -23,6 +23,7 @@ public class DataGUI extends JFrame {
     private JRadioButton rdbtnSong = new JRadioButton("Song");
     private JRadioButton rdbtnArtist = new JRadioButton("Artist");
     private JRadioButton rdbtnAlbum = new JRadioButton("Album");
+    
 
     /**
      * Launch the application.
@@ -53,6 +54,10 @@ public class DataGUI extends JFrame {
         setContentPane(contentPane);
         contentPane.setLayout(null);
         MusicDatabase musicDatabase = new MusicDatabase();
+        ButtonGroup group = new ButtonGroup();
+        group.add(rdbtnSong);
+        group.add(rdbtnArtist);
+        group.add(rdbtnAlbum);
 
         JComboBox<String> artistComboBox = new JComboBox<>();
         artistComboBox.addActionListener(new ActionListener() {
@@ -160,6 +165,10 @@ public class DataGUI extends JFrame {
             musicDatabase.resultSetToColumn(albumComboBox, AlbumsSql.query_Albums());
             musicDatabase.resultSetToColumn(artistComboBox, ArtistsSql.query_Artists());
             
+            JPanel panel = new JPanel();
+            panel.setBounds(5, 11, 10, 10);
+            contentPane.add(panel);
+            
 
             
            
@@ -170,17 +179,21 @@ public class DataGUI extends JFrame {
 
 
     }
+    /**
+     * Sets the table to the music filtered by the search input, and radio button selection
+     * 
+     * @param musicDatabase
+     */
     public void search(MusicDatabase musicDatabase) throws SQLException {
+    	
         if(rdbtnSong.isSelected()) {
             table.setModel(musicDatabase.tableModelQuery(SongsArtistsAlbums.query_Song_String(textFieldSearch.getText())));
         }
 
         if(rdbtnArtist.isSelected()){
-            //TODO search by artist
             table.setModel(musicDatabase.tableModelQuery(SongsArtistsAlbums.query_Artist_String(textFieldSearch.getText())));
         }
         if(rdbtnAlbum.isSelected()) {
-            //TODO search by album
             table.setModel(musicDatabase.tableModelQuery(SongsArtistsAlbums.query_Album_String(textFieldSearch.getText())));
         }
 

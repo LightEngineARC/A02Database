@@ -18,7 +18,10 @@ public class MusicDatabase {
     //below are used for toggling between database creation or not
 //    private static boolean create = true;
     private static boolean create = false;
-    //below are used for toggling between database filling or not
+    //below are used for toggling genearation of data/clean_data/*.sql files
+//    private static boolean genStatements = true;
+    private static boolean genStatements = false;
+    //used for toggling filling behavior
     private static boolean fill = true;
 //    private static boolean fill = false;
 
@@ -176,15 +179,22 @@ public class MusicDatabase {
             //the exception for error code 45000 indicates successful shutdown and can safely be ignored
             if (e.getErrorCode() != 45000)
                 e.printStackTrace();
+        }
+    }
+
+    public String[] parseSQL(String path) {
+        return parseSQL(new File(path));
+    }
+
     /**
      * //TODO describe & test
      * //FIXME known issue: comments in a sql file cause unrecoverable errors
      *
-     * @param path file path
+     * @param file file
      * @return statements found
      */
-    public String[] parseSQL(String path) {
-        try (Scanner in = new Scanner(new File(path))) {
+    public String[] parseSQL(File file) {
+        try (Scanner in = new Scanner(file)) {
             StringBuilder sb = new StringBuilder();
 
             while (in.hasNextLine()) {
@@ -272,15 +282,21 @@ public class MusicDatabase {
                 mDb.executeSqlStatement(statement);
             }
             System.out.println("Finished creation.");
-        }
-        else
+        } else
             System.out.println("Already created\n");
 
-        if (fill) {
-            System.out.println("Filling tables. . .");
+        if (genStatements) {
+            System.out.println("Creating sql statements. . .");
             SQLFactory.main(new String[]{});
-        }
-        else
-            System.out.println("Already filled\n");
+        } else
+            System.out.println("Already made statements\n");
+
+        if (fill) {
+            for (File statement : new File("data/clean_data/").listFiles()) {
+                mDb.parseSQL(statement);
+            }
+            System.out.println("Finished filling");
+        } else
+            System.out.println("Already filled");
     }
 }

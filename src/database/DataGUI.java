@@ -112,7 +112,7 @@ public class DataGUI extends JFrame {
         		if(!textField.getText().contains(",") || !textField.getText().contains(";") || !textField.getText().contains("(") );{
         			try
 					{
-						table.setModel(musicDatabase.tableModelQuery(SongsArtistsAlbums.query_Song_String(textField.getText())));
+                        search(musicDatabase);
 					} catch (SQLException e)
 					{
 						e.printStackTrace();
@@ -127,7 +127,7 @@ public class DataGUI extends JFrame {
         		if(!textField.getText().contains(",") || !textField.getText().contains(";") || !textField.getText().contains("(") );{
         			try
 					{
-						table.setModel(musicDatabase.tableModelQuery(SongsArtistsAlbums.query_Song_String(textField.getText())));
+						search(musicDatabase);
 					} catch (SQLException e)
 					{
 						e.printStackTrace();
@@ -141,7 +141,7 @@ public class DataGUI extends JFrame {
 
 
         try {
-            table.setModel(musicDatabase.tableModelQuery(SongsArtistsAlbums.query_Song_String("Here")));
+            table.setModel(musicDatabase.tableModelQuery(SongsArtistsAlbums.query_All()));
             //musicDatabase.createAndFillDB();
 
             musicDatabase.resultSetToColumn(albumComboBox, AlbumsSql.query_Albums());
@@ -153,6 +153,10 @@ public class DataGUI extends JFrame {
             System.out.println("SQL exception when executing query_all");
         }
 
+
+    }
+    public void search(MusicDatabase musicDatabase) throws SQLException {
+        table.setModel(musicDatabase.tableModelQuery(SongsArtistsAlbums.query_Song_String(textField.getText())));
     }
 }
 

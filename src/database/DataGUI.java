@@ -6,6 +6,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 /**
  * @author Ashton Chatelain
@@ -18,6 +20,7 @@ public class DataGUI extends JFrame {
     private JPanel contentPane;
     private JTable table;
     private boolean isFiltered = false;
+    private JTextField textField;
 
     /**
      * Launch the application.
@@ -62,7 +65,7 @@ public class DataGUI extends JFrame {
 
             }
         });
-        artistComboBox.setBounds(123, 51, 130, 30);
+        artistComboBox.setBounds(257, 51, 130, 30);
         contentPane.add(artistComboBox);
 
         JComboBox<String> albumComboBox = new JComboBox<>();
@@ -77,7 +80,7 @@ public class DataGUI extends JFrame {
                 }
             }
         });
-        albumComboBox.setBounds(289, 51, 130, 30);
+        albumComboBox.setBounds(397, 51, 130, 30);
         contentPane.add(albumComboBox);
 
         JScrollPane scrollPane = new JScrollPane();
@@ -91,31 +94,66 @@ public class DataGUI extends JFrame {
 
         JLabel lblArtist = new JLabel("Filter by Artist");
         lblArtist.setHorizontalAlignment(SwingConstants.CENTER);
-        lblArtist.setBounds(123, 11, 130, 29);
+        lblArtist.setBounds(257, 11, 130, 29);
         contentPane.add(lblArtist);
 
         JLabel lblAlbum = new JLabel("Filter by Album");
         lblAlbum.setHorizontalAlignment(SwingConstants.CENTER);
-        lblAlbum.setBounds(289, 11, 130, 29);
+        lblAlbum.setBounds(397, 11, 130, 29);
         contentPane.add(lblAlbum);
         artistComboBox.addItem("");
 
         albumComboBox.addItem("");
+        
+        textField = new JTextField();
+        textField.addKeyListener(new KeyAdapter() {
+        	@Override
+        	public void keyTyped(KeyEvent arg0) {
+        		if(!textField.getText().contains(",") || !textField.getText().contains(";") || !textField.getText().contains("(") );{
+        			try
+					{
+						table.setModel(musicDatabase.tableModelQuery(SongsArtistsAlbums.query_Song_String(textField.getText())));
+					} catch (SQLException e)
+					{
+						e.printStackTrace();
+					}
+        		}
+        	}
+        });
+        textField.setToolTipText("Search");
+        textField.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent arg0) {
+        		//TODO add action listener to search for songs by entry
+        		if(!textField.getText().contains(",") || !textField.getText().contains(";") || !textField.getText().contains("(") );{
+        			try
+					{
+						table.setModel(musicDatabase.tableModelQuery(SongsArtistsAlbums.query_Song_String(textField.getText())));
+					} catch (SQLException e)
+					{
+						e.printStackTrace();
+					}
+        		}
+        	}
+        });
+        textField.setBounds(47, 56, 185, 20);
+        contentPane.add(textField);
+        textField.setColumns(10);
 
 
         try {
-            table.setModel(musicDatabase.tableModelQuery(SongsArtistsAlbums.query_All()));
+            table.setModel(musicDatabase.tableModelQuery(SongsArtistsAlbums.query_Song_String("H")));
             //musicDatabase.createAndFillDB();
 
             musicDatabase.resultSetToColumn(albumComboBox, AlbumsSql.query_Albums());
             musicDatabase.resultSetToColumn(artistComboBox, ArtistsSql.query_Artists());
+            
+           
 
         } catch (SQLException e) {
             System.out.println("SQL exception when executing query_all");
         }
 
     }
-
 }
 
 

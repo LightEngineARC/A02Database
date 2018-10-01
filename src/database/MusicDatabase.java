@@ -33,7 +33,7 @@ public class MusicDatabase {
 
     }
 
-    private void printData(ResultSet s) throws SQLException {
+    public void printData(ResultSet s) throws SQLException {
 
         ResultSetMetaData metaData = s.getMetaData();
         int columnCount = metaData.getColumnCount();
@@ -158,6 +158,16 @@ public class MusicDatabase {
         }
 
 
+    }
+
+    public void shutdown() {
+        try {
+            DriverManager.getConnection("jdbc:derby:MusicDatabase;shutdown=true");
+        } catch (SQLException e) {
+            //the exception for error code 45000 indicates successful shutdown and can safely be ignored
+            if (e.getErrorCode() != 45000)
+                e.printStackTrace();
+        }
     }
 
     /*

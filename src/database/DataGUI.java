@@ -104,7 +104,7 @@ public class DataGUI extends JFrame {
 
 
         try {
-            table.setModel(musicDatabase.tableModelQuery(SongsArtistsAlbums.query_All()));
+            table.setModel(musicDatabase.tableModelQuery(SongsArtistsAlbums.query_Song_String("Here")));
             //musicDatabase.createAndFillDB();
 
             musicDatabase.resultSetToColumn(albumComboBox, AlbumsSql.query_Albums());

@@ -30,9 +30,9 @@ public class SongsArtistsAlbums {
     public static String query_Song_String(String s) {
         return "SELECT SONGS.TITLE, ARTISTS.ARTIST_NAME as ARTIST, ALBUMS.ALBUM_NAME as ALBUM "
                 + "FROM SONGS "
-                + "WHERE SONGS.TITLE LIKE '" + s + "%' "
                 + "Left join artists on artists.artist_id = songs.artist_id "
                 + "left join albums on albums.album_id = songs.album_id "
+                + "WHERE SONGS.TITLE LIKE '" + s + "%' "
                 + "order by songs.title ASC";
     }
     /**

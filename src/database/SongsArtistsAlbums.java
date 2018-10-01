@@ -32,7 +32,7 @@ public class SongsArtistsAlbums {
                 + "FROM SONGS "
                 + "Left join artists on artists.artist_id = songs.artist_id "
                 + "left join albums on albums.album_id = songs.album_id "
-                + "WHERE SONGS.TITLE LIKE '" + s + "%' "
+                + "WHERE UPPER(SONGS.TITLE) LIKE UPPER('" + s + "%') "
                 + "order by songs.title ASC";
     }
     /**

@@ -2,7 +2,7 @@ package dataHandling;
 
 /**
  * Specifies format for albums table and utilizes parent class to parse song data from dirty_data/albums
- * FIXME needs getLineData() to be finished in order to function, currently will throw exceptions
+ * and insert into database
  * <p>
  *
  * @author Alec Mills

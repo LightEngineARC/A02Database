@@ -94,6 +94,20 @@ public class DataGUI extends JFrame {
         textFieldSearch.setBounds(5, 56, 185, 20);
         contentPane.add(textFieldSearch);
         textFieldSearch.setColumns(10);
+        
+        JButton btnReset = new JButton("Reset");
+        btnReset.setFont(new Font("Tahoma", Font.PLAIN, 9));
+        btnReset.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent arg0) {
+        		textFieldSearch.setText("");
+        		rdbtnSong.setSelected(true);
+        		artistComboBox.setSelectedIndex(0);
+        		albumComboBox.setSelectedIndex(0);
+        	}
+        });
+        btnReset.setBounds(199, 55, 65, 23);
+        contentPane.add(btnReset);
+        
 
 
         artistComboBox.addActionListener(new ActionListener() {

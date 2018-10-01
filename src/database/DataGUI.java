@@ -67,8 +67,7 @@ public class DataGUI extends JFrame {
         albumComboBox.setBounds(414, 51, 130, 30);
         contentPane.add(albumComboBox);
         JScrollPane scrollPane = new JScrollPane();
-        scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
-        scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+
         scrollPane.setBounds(5, 116, 689, 309);
         contentPane.add(scrollPane);
         table = new JTable();
@@ -122,20 +121,6 @@ public class DataGUI extends JFrame {
             }
         });
 
-        textFieldSearch.addKeyListener(new KeyAdapter() {
-        	@Override
-        	public void keyTyped(KeyEvent arg0) {
-        		if(!textFieldSearch.getText().contains(",") || !textFieldSearch.getText().contains(";") || !textFieldSearch.getText().contains("(") );{
-        			try
-					{
-                        search(musicDatabase);
-					} catch (SQLException e)
-					{
-						e.printStackTrace();
-					}
-        		}
-        	}
-        });
 
         textFieldSearch.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent arg0) {
@@ -150,6 +135,21 @@ public class DataGUI extends JFrame {
 					}
         		}
         	}
+        });
+
+        textFieldSearch.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent arg0) {
+                if(!textFieldSearch.getText().contains(",") || !textFieldSearch.getText().contains(";") || !textFieldSearch.getText().contains("(") );{
+                    try
+                    {
+                        search(musicDatabase);
+                    } catch (SQLException e)
+                    {
+                        e.printStackTrace();
+                    }
+                }
+            }
         });
 
         try {

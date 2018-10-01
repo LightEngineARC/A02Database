@@ -45,8 +45,9 @@ public abstract class Parser {
             File dirtyData = new File("data/dirty_data/" + fileName);
             Scanner input = new Scanner(dirtyData);
 
-            //where to store formatted data
-            File cleanData = new File("data/clean_data/" + fileName + ".sql");
+            //currently not writing to files
+//            //where to store formatted data
+//            File cleanData = new File("data/clean_data/" + fileName + ".sql");
 
             //add sql heading
             StringBuilder sb = new StringBuilder();

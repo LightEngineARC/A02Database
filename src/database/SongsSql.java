@@ -7,6 +7,7 @@ package database;
  * Description : (Narrative description, not code)
  */
 public class SongsSql {
+    //TODO add a lot of songs for each of these albums
 
     public static String createTable() {
         return "CREATE TABLE SONGS("

@@ -11,12 +11,14 @@ import java.awt.event.KeyEvent;
 
 /**
  * @author Ashton Chatelain
- * <p>
+ *
  * A02Database
- * Description : (Narrative description, not code)
+ * Description : Create a gui that interacts with a database. The gui has a MusicDatabase class it uses to make queries
+ * and execute statements.
  */
 @SuppressWarnings("serial")
 public class DataGUI extends JFrame {
+    //Private fields that need to be manipulated by methods
     private JPanel contentPane;
     private JTable table;
     private JTextField textFieldSearch;
@@ -44,7 +46,7 @@ public class DataGUI extends JFrame {
     }
 
     /**
-     * Create the frame.
+     * Create the frame and add elements
      */
     public DataGUI() {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -58,8 +60,43 @@ public class DataGUI extends JFrame {
         group.add(rdbtnSong);
         group.add(rdbtnArtist);
         group.add(rdbtnAlbum);
-
         JComboBox<String> artistComboBox = new JComboBox<>();
+        artistComboBox.setBounds(274, 51, 130, 30);
+        contentPane.add(artistComboBox);
+        JComboBox<String> albumComboBox = new JComboBox<>();
+        albumComboBox.setBounds(414, 51, 130, 30);
+        contentPane.add(albumComboBox);
+        JScrollPane scrollPane = new JScrollPane();
+        scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+        scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        scrollPane.setBounds(5, 116, 689, 309);
+        contentPane.add(scrollPane);
+        table = new JTable();
+        scrollPane.setViewportView(table);
+        JLabel lblArtist = new JLabel("Filter by Artist");
+        lblArtist.setHorizontalAlignment(SwingConstants.CENTER);
+        lblArtist.setBounds(274, 11, 130, 29);
+        contentPane.add(lblArtist);
+        JLabel lblAlbum = new JLabel("Filter by Album");
+        lblAlbum.setHorizontalAlignment(SwingConstants.CENTER);
+        lblAlbum.setBounds(414, 11, 130, 29);
+        contentPane.add(lblAlbum);
+        rdbtnSong.setSelected(true);
+        rdbtnSong.setBounds(5, 86, 65, 23);
+        contentPane.add(rdbtnSong);
+        rdbtnArtist.setBounds(72, 86, 65, 23);
+        contentPane.add(rdbtnArtist);
+        rdbtnAlbum.setBounds(139, 86, 65, 23);
+        contentPane.add(rdbtnAlbum);
+        artistComboBox.addItem("");
+        albumComboBox.addItem("");
+        textFieldSearch = new JTextField();
+        textFieldSearch.setToolTipText("Search");
+        textFieldSearch.setBounds(5, 56, 185, 20);
+        contentPane.add(textFieldSearch);
+        textFieldSearch.setColumns(10);
+
+
         artistComboBox.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
                 //TODO filter songs with this artists
@@ -72,10 +109,7 @@ public class DataGUI extends JFrame {
 
             }
         });
-        artistComboBox.setBounds(274, 51, 130, 30);
-        contentPane.add(artistComboBox);
 
-        JComboBox<String> albumComboBox = new JComboBox<>();
         albumComboBox.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
                 //TODO filter songs with this albums
@@ -87,43 +121,7 @@ public class DataGUI extends JFrame {
                 }
             }
         });
-        albumComboBox.setBounds(414, 51, 130, 30);
-        contentPane.add(albumComboBox);
 
-        JScrollPane scrollPane = new JScrollPane();
-        scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
-        scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-        scrollPane.setBounds(5, 116, 689, 309);
-        contentPane.add(scrollPane);
-
-        table = new JTable();
-        scrollPane.setViewportView(table);
-
-        JLabel lblArtist = new JLabel("Filter by Artist");
-        lblArtist.setHorizontalAlignment(SwingConstants.CENTER);
-        lblArtist.setBounds(274, 11, 130, 29);
-        contentPane.add(lblArtist);
-
-        JLabel lblAlbum = new JLabel("Filter by Album");
-        lblAlbum.setHorizontalAlignment(SwingConstants.CENTER);
-        lblAlbum.setBounds(414, 11, 130, 29);
-        contentPane.add(lblAlbum);
-
-        rdbtnSong.setSelected(true);
-        rdbtnSong.setBounds(5, 86, 65, 23);
-        contentPane.add(rdbtnSong);
-
-
-        rdbtnArtist.setBounds(72, 86, 65, 23);
-        contentPane.add(rdbtnArtist);
-
-        rdbtnAlbum.setBounds(139, 86, 65, 23);
-        contentPane.add(rdbtnAlbum);
-        artistComboBox.addItem("");
-
-        albumComboBox.addItem("");
-        
-        textFieldSearch = new JTextField();
         textFieldSearch.addKeyListener(new KeyAdapter() {
         	@Override
         	public void keyTyped(KeyEvent arg0) {
@@ -138,7 +136,7 @@ public class DataGUI extends JFrame {
         		}
         	}
         });
-        textFieldSearch.setToolTipText("Search");
+
         textFieldSearch.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent arg0) {
         		//TODO add action listener to search for songs by entry
@@ -153,43 +151,27 @@ public class DataGUI extends JFrame {
         		}
         	}
         });
-        textFieldSearch.setBounds(5, 56, 185, 20);
-        contentPane.add(textFieldSearch);
-        textFieldSearch.setColumns(10);
-
 
         try {
             table.setModel(musicDatabase.tableModelQuery(SongsArtistsAlbums.query_All()));
             //musicDatabase.createAndFillDB();
-
             musicDatabase.resultSetToColumn(albumComboBox, AlbumsSql.query_Albums());
             musicDatabase.resultSetToColumn(artistComboBox, ArtistsSql.query_Artists());
-            
-            JPanel panel = new JPanel();
-            panel.setBounds(5, 11, 10, 10);
-            contentPane.add(panel);
-            
-
-            
-           
 
         } catch (SQLException e) {
             System.out.println("SQL exception when executing query_all");
         }
-
-
     }
     /**
-     * Sets the table to the music filtered by the search input, and radio button selection
+     * Sets the table to the music filtered by the search input, and radio button selection.
      * 
-     * @param musicDatabase
+     * @param musicDatabase to query
      */
     public void search(MusicDatabase musicDatabase) throws SQLException {
     	
         if(rdbtnSong.isSelected()) {
             table.setModel(musicDatabase.tableModelQuery(SongsArtistsAlbums.query_Song_String(textFieldSearch.getText())));
         }
-
         if(rdbtnArtist.isSelected()){
             table.setModel(musicDatabase.tableModelQuery(SongsArtistsAlbums.query_Artist_String(textFieldSearch.getText())));
         }

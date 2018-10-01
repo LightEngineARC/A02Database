@@ -12,11 +12,11 @@ public abstract class AssociativeParser extends Parser {
     }
 
     @Override
-    protected String[] getLineData(String[] columns) {
-        return new String[]{
-                columns[0], //id
-                columns[2], //artist
-                columns[3], //song
+    protected Tuple[] getLineData(String[] columns) {
+        return new Tuple[]{
+                new Tuple(columns[0], false), //primary key
+                new Tuple(columns[2], false), //foreign key
+                new Tuple(columns[3], false) //foreign key
         };
     }
 
@@ -27,7 +27,7 @@ public abstract class AssociativeParser extends Parser {
     public static class SongsAlbumsParser extends AssociativeParser {
         @Override
         public String getFormat() {
-            return "id, song, album";
+            return "id, song, album_version";
         }
 
         public SongsAlbumsParser() {
@@ -49,7 +49,7 @@ public abstract class AssociativeParser extends Parser {
     public static class ArtistsAlbumsParser extends AssociativeParser {
         @Override
         public String getFormat() {
-            return "id, artist, song";
+            return "id, artist, album_version";
         }
 
         public ArtistsAlbumsParser() {

@@ -25,13 +25,12 @@ public class AlbumVersionsParser extends Parser {
      * @return desired data
      */
     @Override
-    protected String[] getLineData(String[] columns) {
-        String[] result = new String[]{
-                columns[0], //id
-                columns[2], //name
-                columns[4] //album
+    protected Tuple[] getLineData(String[] columns) {
+        return new Tuple[]{
+                new Tuple(columns[0], false), //id
+                new Tuple(columns[2], true), //name
+                new Tuple(columns[4], false) //album
         };
-        return result;
     }
 
     public String getFormat() {

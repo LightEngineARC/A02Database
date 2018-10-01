@@ -29,7 +29,6 @@ CREATE TABLE l_artists_songs (
   CONSTRAINT fk_songs_artists FOREIGN KEY (song) REFERENCES songs (id)
 );
 
-
 CREATE TABLE l_artists_album_versions (
   id            INTEGER NOT NULL PRIMARY KEY,
   artist        INTEGER NOT NULL,
@@ -45,4 +44,3 @@ CREATE TABLE l_songs_album_versions (
   CONSTRAINT fk_songs_album_versions FOREIGN KEY (song) REFERENCES songs (id),
   CONSTRAINT fk_album_versions_songs FOREIGN KEY (album_version) REFERENCES album_versions (id)
 );
-

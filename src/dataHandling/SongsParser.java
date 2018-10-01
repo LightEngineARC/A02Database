@@ -24,11 +24,11 @@ public class SongsParser extends Parser {
      * @return desired data
      */
     @Override
-    protected String[] getLineData(String[] columns) {
-        String[] result = new String[]{
-                columns[0],//id
-                columns[2],//name
-                columns[4],//length
+    protected Tuple[] getLineData(String[] columns) {
+        Tuple[] result = new Tuple[]{
+                new Tuple(columns[0], false), //id
+                new Tuple(columns[2], true), //name
+                new Tuple(columns[4], false) //length
         };
         return result;
     }

@@ -8,13 +8,13 @@ package dataHandling;
  * @author Alec Mills
  */
 public class SongsParser extends Parser {
-    private final String format = "TITLE, LENGTH, ARTIST_ID, ALBUM_ID";
 
     private SongsParser() {
         super("albums");
     }
 
     private void parseData() {
+        String format = "TITLE, LENGTH, ARTIST_ID, ALBUM_ID";
         super.parseData(format);
     }
 

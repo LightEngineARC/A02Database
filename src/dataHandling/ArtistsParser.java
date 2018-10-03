@@ -7,13 +7,13 @@ package dataHandling;
  * @author Alec Mills
  */
 public class ArtistsParser extends Parser {
-    private final String format = "ARTIST_NAME";
 
     private ArtistsParser() {
         super("artists");
     }
 
     private void parseData() {
+        String format = "ARTIST_NAME";
         super.parseData(format);
     }
 

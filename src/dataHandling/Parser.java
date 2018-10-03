@@ -13,7 +13,7 @@ import java.util.Scanner;
  * @author Alec Mills
  */
 public abstract class Parser {
-    protected final String fileName;
+    private final String fileName;
 
     public Parser(String fileName) {
         this.fileName = fileName;
@@ -58,7 +58,7 @@ public abstract class Parser {
                     sb = new StringBuilder();
                     //add single quotes to string values
                     if (Character.isAlphabetic(column.charAt(0)))
-                        sb.append('\'' + column + '\'');
+                        sb.append('\'').append(column).append('\'');
                         //don't add single quotes for ints
                     else
                         sb.append(column);

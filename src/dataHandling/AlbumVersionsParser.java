@@ -2,7 +2,7 @@ package dataHandling;
 
 /**
  * Specifies format for albums table and utilizes parent class to parse song data from dirty_data/albums
- * FIXME needs getLineData() to be finished in order to function, currently will throw exceptions
+ * and insert into database
  * <p>
  *
  * @author Alec Mills
@@ -14,16 +14,13 @@ public class AlbumVersionsParser extends Parser {
         super("album_versions");
     }
 
+    /**
+     * see parent class
+     */
     public void parseData() {
         super.parseData(format);
     }
 
-    /**
-     * defines what data and what format to take from data source
-     *
-     * @param columns raw data
-     * @return desired data
-     */
     @Override
     protected Tuple[] getLineData(String[] columns) {
         return new Tuple[]{
@@ -33,6 +30,9 @@ public class AlbumVersionsParser extends Parser {
         };
     }
 
+    /**
+     * see parent class
+     */
     public String getFormat() {
         return format;
     }

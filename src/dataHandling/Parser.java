@@ -8,10 +8,8 @@ import java.sql.SQLException;
 import java.util.Scanner;
 
 /**
- * line-by-line parser for tab-separated value data files with modular format specifier;
- * generates and executes INSERT statements with format specified by each specific sub-class
- * <p>
- * KNOWN ISSUE: appends comma to very last line which must be manually removed
+ * line-by-line parser for .tsv files with modular format specifier;
+ * dynamically generates and executes INSERT statements with format specified by sub-class implementation
  * <p>
  *
  * @author Alec Mills
@@ -25,14 +23,16 @@ public abstract class Parser {
 
     /**
      * used to allow getLineData to toggle quoting of values on a per-column basis, i.e. INTEGER vs VARCHAR
+     *
+     * @author alec mills
      */
     protected static class Tuple {
         //value for column
-        String value;
+        private final String value;
         //whether to quote that value
-        boolean quote;
+        private final boolean quote;
 
-        protected Tuple(String value, boolean quote) {
+        Tuple(String value, boolean quote) {
             this.value = value;
             this.quote = quote;
         }
@@ -40,6 +40,8 @@ public abstract class Parser {
 
     /**
      * parses data from a known format and converts it to INSERT statement of sql
+     *
+     * @param format enumeration of target columns
      */
     public void parseData(String format) {
         try {
@@ -49,7 +51,7 @@ public abstract class Parser {
             MusicDatabase db = new MusicDatabase();
             Scanner input = new Scanner(dirtyData);
 
-            //add sql INSERT heading
+            //generate sql INSERT heading
             StringBuilder sb = new StringBuilder();
             sb.append("INSERT INTO ");
             sb.append(fileName.toUpperCase());
@@ -57,7 +59,7 @@ public abstract class Parser {
             sb.append(format).append(") VALUES (");
             String heading = sb.toString();
 
-            //add records
+            //generate and execute records
             String log = ""; //for storing currently executing statement for debug purposes
             while (input.hasNextLine()) {
                 sb = new StringBuilder();
@@ -68,11 +70,10 @@ public abstract class Parser {
 
                 for (int i = 0; i < columns.length; i++) {
                     String column = escapeQuotes(columns[i].value);
-                    //add single quotes to string values
-                    //can receive null values in some cases, e.g. songs.length
+                    //"" -> null
                     if (column.length() > 0) {
                         if (columns[i].quote)
-                            sb.append('\'' + column + '\'');
+                            sb.append('\'').append(column).append('\'');
                         else
                             sb.append(column);
                     }
@@ -83,6 +84,7 @@ public abstract class Parser {
                         sb.append(", ");
                 }
                 sb.append(")");
+                //execute statement
                 try {
                     log = sb.toString();
                     db.executeSqlStatement(log);
@@ -91,8 +93,6 @@ public abstract class Parser {
                     e.printStackTrace();
                 }
             }
-
-
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -104,7 +104,7 @@ public abstract class Parser {
      * @param original raw String
      * @return String sans apostrophes
      */
-    private String escapeQuotes(String original) {
+    private String escapeQuotes(String original) { //TEST PASSED
         StringBuilder sb = new StringBuilder();
         for (char ch : original.toCharArray()) {
             if (ch != '\'' && ch != '"')

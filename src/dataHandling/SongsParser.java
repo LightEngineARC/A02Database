@@ -2,6 +2,7 @@ package dataHandling;
 
 /**
  * Specifies format for songs table and utilizes parent class to parse song data from dirty_data/songs
+ * and insert into database
  * <p>
  *
  * @author Alec Mills
@@ -13,16 +14,13 @@ public class SongsParser extends Parser {
         super("songs");
     }
 
+    /**
+     * see parent class
+     */
     public void parseData() {
         super.parseData(format);
     }
 
-    /**
-     * defines what data and what format to take from data source
-     *
-     * @param columns raw data
-     * @return desired data
-     */
     @Override
     protected Tuple[] getLineData(String[] columns) {
         Tuple[] result = new Tuple[]{
@@ -33,6 +31,9 @@ public class SongsParser extends Parser {
         return result;
     }
 
+    /**
+     * see parent class
+     */
     public String getFormat() {
         return format;
     }

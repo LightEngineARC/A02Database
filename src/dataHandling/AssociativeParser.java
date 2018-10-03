@@ -1,12 +1,22 @@
 package dataHandling;
 
+/**
+ * Specifies format for artists table and utilizes parent class to parse song data from dirty_data/artists
+ * and insert into database
+ * <p>
+ *
+ * @author Alec Mills
+ */
 public abstract class AssociativeParser extends Parser {
     private final String format = getFormat();
 
-    public AssociativeParser(String path) {
+    AssociativeParser(String path) {
         super(path);
     }
 
+    /**
+     * see parent class
+     */
     public void parseData() {
         super.parseData(format);
     }
@@ -20,10 +30,9 @@ public abstract class AssociativeParser extends Parser {
         };
     }
 
-    /**
-     * here are specific parsers for the associative tables we need
+    /*
+     * below are specific parsers for the associative tables we need
      */
-
     public static class SongsAlbumsParser extends AssociativeParser {
         @Override
         public String getFormat() {

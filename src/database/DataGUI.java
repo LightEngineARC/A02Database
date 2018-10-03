@@ -5,9 +5,9 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.SQLException;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.sql.SQLException;
 
 /**
  * @author Ashton Chatelain
@@ -25,6 +25,7 @@ public class DataGUI extends JFrame {
     private JRadioButton rdbtnSong = new JRadioButton("Song");
     private JRadioButton rdbtnArtist = new JRadioButton("Artist");
     private JRadioButton rdbtnAlbum = new JRadioButton("Album");
+    private static MusicDatabase musicDatabase = new MusicDatabase();
     
 
     /**
@@ -39,6 +40,8 @@ public class DataGUI extends JFrame {
                     frame.setVisible(true);
                 } catch (Exception e) {
                     e.printStackTrace();
+                } finally {
+                    musicDatabase.shutdown();
                 }
             }
         });

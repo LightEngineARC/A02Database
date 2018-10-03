@@ -8,22 +8,19 @@ package dataHandling;
  * @author Alec Mills
  */
 public class AlbumsParser extends Parser {
-    private final String format = "id, name";
 
     public AlbumsParser() {
         super("albums");
     }
 
+    /**
+     * see parent class
+     */
     public void parseData() {
+        String format = "ALBUM_NAME, GENRE, RELEASE_YEAR, ARTIST_ID";
         super.parseData(format);
     }
 
-    /**
-     * defines what data and what format to take from data source
-     *
-     * @param columns raw data
-     * @return desired data
-     */
     @Override
     protected Tuple[] getLineData(String[] columns) {
         return new Tuple[]{
@@ -32,7 +29,11 @@ public class AlbumsParser extends Parser {
         };
     }
 
+    /**
+     * see parent class
+     */
     public String getFormat() {
+        String format = "id, name";
         return format;
     }
 }

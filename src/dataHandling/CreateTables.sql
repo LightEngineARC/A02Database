@@ -1,22 +1,22 @@
 CREATE TABLE artists (
   id   INTEGER      NOT NULL PRIMARY KEY,
-  name VARCHAR(255) NOT NULL
+  name VARCHAR(355) NOT NULL
 );
 
 CREATE TABLE songs (
   id     INTEGER      NOT NULL PRIMARY KEY,
-  name   VARCHAR(255) NOT NULL,
+  name   VARCHAR(355) NOT NULL,
   length INTEGER CHECK (length IS NULL OR length > 0)
 );
 
 CREATE TABLE albums (
   id   INTEGER      NOT NULL PRIMARY KEY,
-  name VARCHAR(255) NOT NULL
+  name VARCHAR(355) NOT NULL
 );
 
 CREATE TABLE album_versions (
   id    INTEGER      NOT NULL PRIMARY KEY,
-  name  VARCHAR(255) NOT NULL,
+  name  VARCHAR(355) NOT NULL,
   album INTEGER      NOT NULL,
   CONSTRAINT fk_album_version_album FOREIGN KEY (album) REFERENCES albums (id)
 );

@@ -15,12 +15,21 @@ public class MusicDatabase {
     private ResultSetMetaData metaData;
 
     //FIXME should probably just make alternate constructors, or pass boolean values into the constructor?
-    //below are used for toggling between database creation or not
-//    private static boolean create = true;
+//below are used for toggling between database creation or not
+    //private static boolean create = true;
     private static boolean create = false;
-    //used for toggling filling behavior
+
+    //used for toggling table dropping (will drop all tables if true)
+//    private static boolean dropTables = true;
+    private static boolean dropTables = false;
+
+    //used for toggling db table-creation (for example, tables have been modified)
+//    private static boolean addTables = true;
+    private static boolean addTables = false;
+
+    //used for toggling db filling behavior
+//    private static boolean fill = true;
     private static boolean fill = true;
-//    private static boolean fill = false;
 
     public ResultSetMetaData getMetaData() {
         return metaData;
@@ -227,17 +236,26 @@ public class MusicDatabase {
      */
     public static void main(String[] args) throws SQLException {
         MusicDatabase mDb = new MusicDatabase();
+        if (dropTables) {
+            mDb.dropTable("l_artists_album_versions");
+            mDb.dropTable("l_songs_album_versions");
+            mDb.dropTable("l_artists_songs");
+            mDb.dropTable("album_versions");
+            mDb.dropTable("albums");
+            mDb.dropTable("artists");
+            mDb.dropTable("songs");
+        }
         //if we need to create the database, do so
-        if (create) {
+        if (addTables) {
             for (String statement : mDb.parseSQL("src/dataHandling/CreateTables.sql")) {
                 System.out.println("EXECUTING: ");
                 System.out.println(statement);
                 System.out.println();
                 mDb.executeSqlStatement(statement);
             }
-            System.out.println("Finished creation.");
+            System.out.println("Finished adding tables.");
         } else
-            System.out.println("Already created\n");
+            System.out.println("Already added tables\n");
         //if we need to fill the database, do so
         if (fill) {
             System.out.println("Filling database...");

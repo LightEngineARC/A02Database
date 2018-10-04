@@ -94,6 +94,7 @@ public abstract class Parser {
                 }
             }
         } catch (IOException e) {
+            System.out.println("Hint: does file path data/dirty_data/* exist?");
             e.printStackTrace();
         }
     }

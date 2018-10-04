@@ -17,10 +17,7 @@ public class MusicDatabase {
     //FIXME should probably just make alternate constructors, or pass boolean values into the constructor?
     //below are used for toggling between database creation or not
 //    private static boolean create = true;
-    private static boolean create = false;
-    //below are used for toggling genearation of data/clean_data/*.sql files
-//    private static boolean genStatements = true;
-    private static boolean genStatements = false;
+    private static boolean create = true;
     //used for toggling filling behavior
     private static boolean fill = true;
 //    private static boolean fill = false;
@@ -65,8 +62,8 @@ public class MusicDatabase {
     /**
      * Prints column headers and separated by two spaces and adds a line of dashes
      *
-     * @param metaData
-     * @throws SQLException
+     * @param metaData informatoin about columns
+     * @throws SQLException throws if db connection has errors
      */
     private static void printHeader(ResultSetMetaData metaData) throws SQLException {
         int columnCount = metaData.getColumnCount();
@@ -229,51 +226,8 @@ public class MusicDatabase {
      * TEST CLIENT
      */
     public static void main(String[] args) throws SQLException {
-
         MusicDatabase mDb = new MusicDatabase();
-
-//        // TODO TEST this for all tables. This will purge all old and
-//        // new tables, create them, and query all on each of them.
-//
-//        // ORIGINAL NAMES
-//        try {
-//            mDb.executeSqlStatement("drop table albums");
-//        } catch (SQLException e) {
-//            System.out.println("table ALBUMS does not exist\n");
-//        }
-//        try {
-//            mDb.executeSqlStatement("drop table artists");
-//        } catch (SQLException e) {
-//            System.out.println("table ARTISTS does not exist\n");
-//        }
-//        try {
-//            mDb.executeSqlStatement("drop table songs");
-//        } catch (SQLException e) {
-//            System.out.println("table SONGS does not exist\n");
-//        }
-//
-//        // PLURALIZED TABLES
-//        try {
-//            mDb.executeSqlStatement(AlbumsSql.dropTable());
-//        } catch (SQLException e) {
-//            System.out.println();
-//
-//        }
-//        try {
-//            mDb.executeSqlStatement(ArtistsSql.dropTable());
-//        } catch (SQLException e) {
-//            System.out.println();
-//
-//        }
-//        try {
-//            mDb.executeSqlStatement(SongsSql.dropTable());
-//        } catch (SQLException e) {
-//            System.out.println();
-//
-//        }
-//
-//        mDb.createAndFillDB();
-//        mDb.executeQueries(SongsSql.query_All(), ArtistsSql.query_All(), AlbumsSql.query_All(), SongsArtistsAlbums.query_Artist_String("Eve 6"));
+        //if we need to create the database, do so
         if (create) {
             for (String statement : mDb.parseSQL("src/dataHandling/CreateTables.sql")) {
                 System.out.println("EXECUTING: ");
@@ -284,19 +238,12 @@ public class MusicDatabase {
             System.out.println("Finished creation.");
         } else
             System.out.println("Already created\n");
-
-        if (genStatements) {
-            System.out.println("Creating sql statements. . .");
-            SQLFactory.main(new String[]{});
-        } else
-            System.out.println("Already made statements\n");
-
+        //if we need to fill the database, do so
         if (fill) {
-            for (File statement : new File("data/clean_data/").listFiles()) {
-                mDb.parseSQL(statement);
-            }
-            System.out.println("Finished filling");
+            System.out.println("Filling database...");
+            SQLFactory.fillDB(false);
         } else
-            System.out.println("Already filled");
+            System.out.println("Already filled database\n");
+
     }
 }

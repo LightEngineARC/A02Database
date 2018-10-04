@@ -1,7 +1,7 @@
 package dataHandling;
 
 public class SQLFactory {
-    static void fillDB(Boolean databaseFilled) {
+    public static void fillDB(Boolean databaseFilled) {
         if (!databaseFilled) {
             Parser[] parsers = new Parser[]{
                     new ArtistsParser(), new SongsParser(), new AlbumsParser(), new AlbumVersionsParser(),

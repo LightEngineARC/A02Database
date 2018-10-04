@@ -1,20 +1,32 @@
 package database;
 
+import dataHandling.SQLFactory;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.io.File;
+import java.io.IOException;
 import java.sql.*;
+import java.util.Scanner;
 
 public class MusicDatabase {
 
     private ResultSet results;
     private ResultSetMetaData metaData;
 
+    //FIXME should probably just make alternate constructors, or pass boolean values into the constructor?
+    //below are used for toggling between database creation or not
+//    private static boolean create = true;
+    private static boolean create = false;
+    //below are used for toggling genearation of data/clean_data/*.sql files
+//    private static boolean genStatements = true;
+    private static boolean genStatements = false;
+    //used for toggling filling behavior
+    private static boolean fill = true;
+//    private static boolean fill = false;
+
     public ResultSetMetaData getMetaData() {
         return metaData;
-    }
-
-    public MusicDatabase() {
-
     }
 
     public void createAndFillDB() throws SQLException {
@@ -23,8 +35,8 @@ public class MusicDatabase {
     }
 
     public void executeSqlStatement(String... sqlStatements) throws SQLException {
-        try (Connection connection = DriverManager.getConnection("jdbc:derby:MusicDatabase;create=true");
-             // attribute "...;create=true" removed after databaseold creation
+        try (Connection connection = DriverManager.getConnection("jdbc:derby:" +
+                ((create) ? "MusicDatabase;create=true" : "MusicDatabase"));
              Statement statement = connection.createStatement()) {
             for (String sqlStatement : sqlStatements) {
                 statement.execute(sqlStatement);
@@ -170,6 +182,44 @@ public class MusicDatabase {
         }
     }
 
+    public String[] parseSQL(String path) {
+        return parseSQL(new File(path));
+    }
+
+    /**
+     * //TODO describe & test
+     * //FIXME known issue: comments in a sql file cause unrecoverable errors
+     *
+     * @param file file
+     * @return statements found
+     */
+    public String[] parseSQL(File file) {
+        try (Scanner in = new Scanner(file)) {
+            StringBuilder sb = new StringBuilder();
+
+            while (in.hasNextLine()) {
+                String line = in.nextLine();
+                //FIXME Ignore comments, below doesn't work
+//                if (line.length() > 0 && line.charAt(0) != '-')
+                sb.append(line);
+            }
+
+            String[] statements = sb.toString().split(";");
+            return statements;
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public void dropTable(String table) {
+        try {
+            executeSqlStatement("DROP TABLE " + table);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
     /*
      *
      *
@@ -182,49 +232,71 @@ public class MusicDatabase {
 
         MusicDatabase mDb = new MusicDatabase();
 
-        // TODO TEST this for all tables. This will purge all old and
-        // new tables, create them, and query all on each of them.
+//        // TODO TEST this for all tables. This will purge all old and
+//        // new tables, create them, and query all on each of them.
+//
+//        // ORIGINAL NAMES
+//        try {
+//            mDb.executeSqlStatement("drop table albums");
+//        } catch (SQLException e) {
+//            System.out.println("table ALBUMS does not exist\n");
+//        }
+//        try {
+//            mDb.executeSqlStatement("drop table artists");
+//        } catch (SQLException e) {
+//            System.out.println("table ARTISTS does not exist\n");
+//        }
+//        try {
+//            mDb.executeSqlStatement("drop table songs");
+//        } catch (SQLException e) {
+//            System.out.println("table SONGS does not exist\n");
+//        }
+//
+//        // PLURALIZED TABLES
+//        try {
+//            mDb.executeSqlStatement(AlbumsSql.dropTable());
+//        } catch (SQLException e) {
+//            System.out.println();
+//
+//        }
+//        try {
+//            mDb.executeSqlStatement(ArtistsSql.dropTable());
+//        } catch (SQLException e) {
+//            System.out.println();
+//
+//        }
+//        try {
+//            mDb.executeSqlStatement(SongsSql.dropTable());
+//        } catch (SQLException e) {
+//            System.out.println();
+//
+//        }
+//
+//        mDb.createAndFillDB();
+//        mDb.executeQueries(SongsSql.query_All(), ArtistsSql.query_All(), AlbumsSql.query_All(), SongsArtistsAlbums.query_Artist_String("Eve 6"));
+        if (create) {
+            for (String statement : mDb.parseSQL("src/dataHandling/CreateTables.sql")) {
+                System.out.println("EXECUTING: ");
+                System.out.println(statement);
+                System.out.println();
+                mDb.executeSqlStatement(statement);
+            }
+            System.out.println("Finished creation.");
+        } else
+            System.out.println("Already created\n");
 
-        // ORIGINAL NAMES
-        try {
-            mDb.executeSqlStatement("drop table albums");
-        } catch (SQLException e) {
-            System.out.println("table ALBUMS does not exist\n");
-        }
-        try {
-            mDb.executeSqlStatement("drop table artists");
-        } catch (SQLException e) {
-            System.out.println("table ARTISTS does not exist\n");
-        }
-        try {
-            mDb.executeSqlStatement("drop table songs");
-        } catch (SQLException e) {
-            System.out.println("table SONGS does not exist\n");
-        }
+        if (genStatements) {
+            System.out.println("Creating sql statements. . .");
+            SQLFactory.main(new String[]{});
+        } else
+            System.out.println("Already made statements\n");
 
-        // PLURALIZED TABLES
-        try {
-            mDb.executeSqlStatement(AlbumsSql.dropTable());
-        } catch (SQLException e) {
-            System.out.println();
-
-        }
-        try {
-            mDb.executeSqlStatement(ArtistsSql.dropTable());
-        } catch (SQLException e) {
-            System.out.println();
-
-        }
-        try {
-            mDb.executeSqlStatement(SongsSql.dropTable());
-        } catch (SQLException e) {
-            System.out.println();
-
-        }
-
-        mDb.createAndFillDB();
-        mDb.executeQueries(SongsSql.query_All(), ArtistsSql.query_All(), AlbumsSql.query_All(), SongsArtistsAlbums.query_Artist_String("Eve 6"));
-
-        System.out.println("done\n");
+        if (fill) {
+            for (File statement : new File("data/clean_data/").listFiles()) {
+                mDb.parseSQL(statement);
+            }
+            System.out.println("Finished filling");
+        } else
+            System.out.println("Already filled");
     }
 }

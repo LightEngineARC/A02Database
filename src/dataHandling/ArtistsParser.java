@@ -1,36 +1,38 @@
 package dataHandling;
 
 /**
- * Specifies format for artists table and utilizes parent class to parse song data from data_wanted/artists
+ * Specifies format for artists table and utilizes parent class to parse song data from dirty_data/artists
+ * and insert into database
  * <p>
  *
  * @author Alec Mills
  */
 public class ArtistsParser extends Parser {
+    private final String format = "id, name";
 
-    private ArtistsParser() {
+    public ArtistsParser() {
         super("artists");
     }
 
-    private void parseData() {
-        String format = "ARTIST_NAME";
+    /**
+     * see parent class
+     */
+    public void parseData() {
         super.parseData(format);
     }
 
-    /**
-     * defines what data and what format to take from data source
-     *
-     * @param columns raw data
-     * @return desired data
-     */
     @Override
-    protected String[] getLineData(String[] columns) {
-        return new String[]{
-                columns[3]
+    protected Tuple[] getLineData(String[] columns) {
+        return new Tuple[]{
+                new Tuple(columns[0], false), //id
+                new Tuple(columns[2], true) //name
         };
     }
 
-    public static void main(String[] args) {
-        new ArtistsParser().parseData();
+    /**
+     * see parent class
+     */
+    public String getFormat() {
+        return format;
     }
 }

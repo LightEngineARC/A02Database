@@ -1,0 +1,10 @@
+our table name : their table name
+(note, they do not pluralize any table names)
+---------------------------------
+artists                  : artist
+songs                    : recording
+albums                   : release_group
+album_versions           : release
+l_artists_songs          : l_artist_recording
+l_artists_album_versions : l_artist_release
+l_songs_album_versions   : l_recording_release

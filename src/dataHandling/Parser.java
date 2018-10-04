@@ -1,13 +1,15 @@
 package dataHandling;
 
+import database.MusicDatabase;
+
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.Scanner;
 
 /**
- * line-by-line parser for tab-separated value data files with modular format specifier, input/output file location, etc
- * KNOWN ISSUE: appends comma to very last line which must be manually removed
+ * line-by-line parser for .tsv files with modular format specifier;
+ * dynamically generates and executes INSERT statements with format specified by sub-class implementation
  * <p>
  *
  * @author Alec Mills
@@ -20,73 +22,92 @@ public abstract class Parser {
     }
 
     /**
-     * parses data from a known format and converts it to INSERT statement of sql
+     * used to allow getLineData to toggle quoting of values on a per-column basis, i.e. INTEGER vs VARCHAR
+     *
+     * @author alec mills
      */
-    protected void parseData(String format) {
+    protected static class Tuple {
+        //value for column
+        private final String value;
+        //whether to quote that value
+        private final boolean quote;
+
+        Tuple(String value, boolean quote) {
+            this.value = value;
+            this.quote = quote;
+        }
+    }
+
+    /**
+     * parses data from a known format and converts it to INSERT statement of sql
+     *
+     * @param format enumeration of target columns
+     */
+    public void parseData(String format) {
         try {
             //data to format
-            File dirtyData = new File("data/data_wanted/" + fileName);
+            File dirtyData = new File("data/dirty_data/" + fileName);
+
+            MusicDatabase db = new MusicDatabase();
             Scanner input = new Scanner(dirtyData);
 
-            //where to store formatted data
-            File cleanData = new File("data/clean_data/" + fileName + ".sql");
-            FileWriter write = new FileWriter(cleanData, true);
-
-            //add sql heading
+            //generate sql INSERT heading
             StringBuilder sb = new StringBuilder();
             sb.append("INSERT INTO ");
             sb.append(fileName.toUpperCase());
             sb.append(" (");
-            sb.append(format).append(") VALUES\n");
-            write.write(sb.toString());
-            write.flush();
+            sb.append(format).append(") VALUES (");
+            String heading = sb.toString();
 
-            //add records
+            //generate and execute records
+            String log = ""; //for storing currently executing statement for debug purposes
             while (input.hasNextLine()) {
+                sb = new StringBuilder();
+                sb.append(heading);
+
                 String line = input.nextLine();
-                //for debugging
-//                    System.out.println(line);
+                Tuple[] columns = getLineData(line.split("\\t"));
 
-                String[] columns = getLineData(line.split("\\t"));
-                //for debugging
-//                   System.out.println();
-
-
-                write.write("(");
                 for (int i = 0; i < columns.length; i++) {
-                    String column = escapeQuotes(columns[i]);
-                    sb = new StringBuilder();
-                    //add single quotes to string values
-                    if (Character.isAlphabetic(column.charAt(0)))
-                        sb.append('\'').append(column).append('\'');
-                        //don't add single quotes for ints
+                    String column = escapeQuotes(columns[i].value);
+                    //"" -> null
+                    if (column.length() > 0) {
+                        if (columns[i].quote)
+                            sb.append('\'').append(column).append('\'');
+                        else
+                            sb.append(column);
+                    }
                     else
-                        sb.append(column);
+                        sb.append("null");
                     //we need commas on all but the last value in a record
                     if (i < columns.length - 1)
                         sb.append(", ");
                 }
-                write.write(sb.toString() + "),\n");
-                write.flush();
+                sb.append(")");
+                //execute statement
+                try {
+                    log = sb.toString();
+                    db.executeSqlStatement(log);
+                } catch (SQLException e) {
+                    System.out.println(log);
+                    e.printStackTrace();
+                }
             }
-
-            write.close();
-
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     /**
-     * removes apostrophes from a String
+     * removes single & double quotes from a String
      *
      * @param original raw String
      * @return String sans apostrophes
      */
-    private String escapeQuotes(String original) {
+    private String escapeQuotes(String original) { //TEST PASSED
         StringBuilder sb = new StringBuilder();
         for (char ch : original.toCharArray()) {
-            if (ch != '\'')
+            if (ch != '\'' && ch != '"')
                 sb.append(ch);
         }
 
@@ -99,5 +120,12 @@ public abstract class Parser {
      * @param columns the raw data
      * @return String[] of desired column values in order
      */
-    protected abstract String[] getLineData(String[] columns);
+    protected abstract Tuple[] getLineData(String[] columns);
+
+    /**
+     * specify table format
+     *
+     * @return String representation of table columns
+     */
+    public abstract String getFormat();
 }

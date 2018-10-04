@@ -1,40 +1,39 @@
 package dataHandling;
 
 /**
- * Specifies format for albums table and utilizes parent class to parse song data from data_wanted/albums
- * FIXME needs getLineData() to be finished in order to function, currently will throw exceptions
+ * Specifies format for albums table and utilizes parent class to parse song data from dirty_data/albums
+ * and insert into database
  * <p>
  *
  * @author Alec Mills
  */
 public class AlbumsParser extends Parser {
 
-    private AlbumsParser() {
-        super("songs");
+    public AlbumsParser() {
+        super("albums");
     }
 
-    private void parseData() {
+    /**
+     * see parent class
+     */
+    public void parseData() {
         String format = "ALBUM_NAME, GENRE, RELEASE_YEAR, ARTIST_ID";
         super.parseData(format);
     }
 
-    /**
-     * defines what data and what format to take from data source
-     *
-     * @param columns raw data
-     * @return desired data
-     */
     @Override
-    protected String[] getLineData(String[] columns) {
-        //FIXME
-//        String[] result = new String[] {
-//                columns[2],
-//        };
-//        return result;
-        return null;
+    protected Tuple[] getLineData(String[] columns) {
+        return new Tuple[]{
+                new Tuple(columns[0], false), //id
+                new Tuple(columns[2], true) //name
+        };
     }
 
-    public static void main(String[] args) {
-        new AlbumsParser().parseData();
+    /**
+     * see parent class
+     */
+    public String getFormat() {
+        String format = "id, name";
+        return format;
     }
 }

@@ -35,11 +35,6 @@ public class MusicDatabase {
         return metaData;
     }
 
-    public void createAndFillDB() throws SQLException {
-        executeSqlStatement(ArtistsSql.createTable(), ArtistsSql.fillTable(), SongsSql.createTable());
-        executeSqlStatement(AlbumsSql.createTable(), AlbumsSql.fillTable(), SongsSql.fillTable());
-    }
-
     public void executeSqlStatement(String... sqlStatements) throws SQLException {
         try (Connection connection = DriverManager.getConnection("jdbc:derby:" +
                 ((create) ? "MusicDatabase;create=true" : "MusicDatabase"));

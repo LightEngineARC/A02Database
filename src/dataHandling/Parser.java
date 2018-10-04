@@ -71,7 +71,7 @@ public abstract class Parser {
                 for (int i = 0; i < columns.length; i++) {
                     String column = escapeQuotes(columns[i].value);
                     //"" -> null
-                    if (column.length() > 0) {
+                    if (column.length() > 0 && !column.toUpperCase().equals("\\N")) {
                         if (columns[i].quote)
                             sb.append('\'').append(column).append('\'');
                         else

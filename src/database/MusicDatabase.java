@@ -17,7 +17,7 @@ public class MusicDatabase {
     //FIXME should probably just make alternate constructors, or pass boolean values into the constructor?
     //below are used for toggling between database creation or not
 //    private static boolean create = true;
-    private static boolean create = true;
+    private static boolean create = false;
     //used for toggling filling behavior
     private static boolean fill = true;
 //    private static boolean fill = false;
@@ -245,5 +245,6 @@ public class MusicDatabase {
         } else
             System.out.println("Already filled database\n");
 
+        mDb.shutdown();
     }
 }

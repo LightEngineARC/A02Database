@@ -33,7 +33,6 @@ public class AlbumsParser extends Parser {
      * see parent class
      */
     public String getFormat() {
-        String format = "id, name";
-        return format;
+        return "id, name";
     }
 }

@@ -21,15 +21,15 @@ public class MusicDatabase {
 
     //used for toggling table dropping (will drop all tables if true)
 //    private static boolean dropTables = true;
-    private static boolean dropTables = false;
+    private static final boolean dropTables = false;
 
     //used for toggling db table-creation (for example, tables have been modified)
 //    private static boolean addTables = true;
-    private static boolean addTables = false;
+    private static final boolean addTables = false;
 
     //used for toggling db filling behavior
 //    private static boolean fill = true;
-    private static boolean fill = true;
+    private static final boolean fill = false;
 
     public ResultSetMetaData getMetaData() {
         return metaData;
@@ -102,6 +102,20 @@ public class MusicDatabase {
 
     }
 
+    public ResultSetMetaData executeQueryVerbose(String query) {
+        try (Connection connection = DriverManager.getConnection("jdbc:derby:MusicDatabase");
+             Statement statement = connection.createStatement()) {
+            ResultSet results = statement.executeQuery(query);
+            ResultSetMetaData metadata = results.getMetaData();
+            printData(results);
+            return metadata;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+
     /**
      * execute a query that will return results
      *
@@ -115,7 +129,7 @@ public class MusicDatabase {
             this.results = results;
             this.metaData = results.getMetaData();
 
-            return this.resultSetToTableModel();
+            return resultSetToTableModel();
         }
     }
 
@@ -205,8 +219,7 @@ public class MusicDatabase {
                 sb.append(line);
             }
 
-            String[] statements = sb.toString().split(";");
-            return statements;
+            return sb.toString().split(";");
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -217,6 +230,22 @@ public class MusicDatabase {
     public void dropTable(String table) {
         try {
             executeSqlStatement("DROP TABLE " + table);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void getDataBaseMetaData() {
+        try (Connection connection = DriverManager.getConnection("jdbc:derby:MusicDatabase");
+             Statement statement = connection.createStatement()) {
+            DatabaseMetaData dbmd = connection.getMetaData();
+            ResultSet rs = dbmd.getTables(null, null, null, new String[]{"TABLE"});
+            while (rs.next()) {
+                System.out.println(rs.getString("TABLE_NAME"));
+                ResultSetMetaData metadata = executeQueryVerbose("SELECT * FROM " + rs.getString("TABLE_NAME") + " FETCH FIRST ROW ONLY");
+                System.out.printf("%s has %d columns%n", rs.getString("TABLE_NAME"), metadata.getColumnCount());
+                System.out.println("---------");
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -258,6 +287,17 @@ public class MusicDatabase {
         } else
             System.out.println("Already filled database\n");
 
+//        mDb.executeQueries(
+//        "SELECT songs.name, artists.name, albums.name "
+//            + "FROM songs, artists, albums "
+//            + "LEFT JOIN songs ON songs.id=l_artists_songs.song " //songs -> link table
+//            + "LEFT JOIN l_artists_songs ON l_artists_songs.artist=artist.id " //link table - > artists
+//            + "LEFT JOIN artists ON artists.id=l_artists_album_versions.artist " //artists -> link table
+//            + "LEFT JOIN l_artists_album_versions ON l_artists_album_versions.album_version=album_versions.id " //link table -> album_versions
+//            + "LEFT JOIN album_versions ON album_versions.album=albums.id " //album_versions -> albums DISTINCT
+//            + "ORDER BY songs.name ASC");
+//        mDb.getDataBaseMetaData();
+//        mDb.executeQueries("SELECT * FROM artists FETCH FIRST 1000 ROWS ONLY");
         mDb.shutdown();
     }
 }

@@ -13,6 +13,7 @@ public class SQLFactory {
 
             for (Parser parser : parsers) {
                 parser.parseData(parser.getFormat());
+                System.out.println("Finished filling: " + parser.getClass());
             }
         }
     }

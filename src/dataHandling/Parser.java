@@ -90,7 +90,6 @@ public abstract class Parser {
                     db.executeSqlStatement(log);
                 } catch (SQLException e) {
                     System.out.println(log);
-                    e.printStackTrace();
                 }
             }
         } catch (IOException e) {

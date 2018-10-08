@@ -24,7 +24,9 @@ public class DataGUI extends JFrame {
     private final JRadioButton rdbtnArtist = new JRadioButton("Artist");
     private final JRadioButton rdbtnAlbum = new JRadioButton("Album");
     private static final MusicDatabase musicDatabase = new MusicDatabase();
-    
+    private static final int windowWidth = Toolkit.getDefaultToolkit().getScreenSize().width;
+    private static final int windowHeight = Toolkit.getDefaultToolkit().getScreenSize().height;
+
 
     /**
      * Launch the application.
@@ -35,6 +37,7 @@ public class DataGUI extends JFrame {
             try {
                 DataGUI frame = new DataGUI();
                 frame.setVisible(true);
+                frame.setResizable(false);
             } catch (Exception e) {
                 e.printStackTrace();
             } finally {
@@ -49,7 +52,7 @@ public class DataGUI extends JFrame {
      */
     public DataGUI() {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBounds(100, 100, 720, 475);
+        setBounds(0, 0, windowWidth, windowHeight);
         //Private fields that need to be manipulated by methods
         JPanel contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -68,7 +71,7 @@ public class DataGUI extends JFrame {
         contentPane.add(albumComboBox);
         JScrollPane scrollPane = new JScrollPane();
 
-        scrollPane.setBounds(5, 116, 689, 309);
+        scrollPane.setBounds(5, 116, windowWidth, windowHeight - 116);
         contentPane.add(scrollPane);
         table = new JTable();
         scrollPane.setViewportView(table);
@@ -156,13 +159,15 @@ public class DataGUI extends JFrame {
         textFieldSearch.addKeyListener(new KeyAdapter() {
             @Override
             public void keyTyped(KeyEvent arg0) {
-                if(!textFieldSearch.getText().contains(",") || !textFieldSearch.getText().contains(";") || !textFieldSearch.getText().contains("(") );{
-                    try
+                if (arg0.getKeyCode() == KeyEvent.VK_ENTER) {
+                    if (!textFieldSearch.getText().contains(",") || !textFieldSearch.getText().contains(";") || !textFieldSearch.getText().contains("("))
+                        ;
                     {
-                        search(musicDatabase);
-                    } catch (SQLException e)
-                    {
-                        e.printStackTrace();
+                        try {
+                            search(musicDatabase);
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             }

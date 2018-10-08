@@ -297,6 +297,13 @@ public class MusicDatabase {
         if (fill) {
             System.out.println("Filling database...");
             SQLFactory.fillDB(false);
+            mDb.executeSqlStatement(
+                    "create index indLaav on l_artists_album_versions (artist, album_version)",
+                    "create index indLas on l_artists_songs (artist, song)",
+                    "create index indAV on album_versions (name, album)",
+                    "create index  indArtists on artists (name)",
+                    "create index  indSongs on SONGS (name)"
+            );
         } else
             System.out.println("Already filled database\n");
 

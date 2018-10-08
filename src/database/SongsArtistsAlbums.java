@@ -15,7 +15,7 @@ public class SongsArtistsAlbums {
      */
     //FIXME
     public static String query_All() {
-        return "SELECT * from all_content fetch first 1000 rows only";
+        return "SELECT * from all_content fetch first 500 rows only";
     }
 
     /**
@@ -25,7 +25,7 @@ public class SongsArtistsAlbums {
     public static String query_Song_String(String song) {
         return "SELECT artist, album, song from all_content "
                 + "WHERE UPPER(song) LIKE UPPER('%" + song + "%') "
-                + "order by song ASC";
+                + "order by song ASC fetch first 800 rows only";
     }
 
     /**

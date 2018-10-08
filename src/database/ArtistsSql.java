@@ -44,7 +44,7 @@ public class ArtistsSql {
     }
 
     public static String query_Artists() {
-        return "SELECT ARTIST_NAME as COL FROM ARTISTS order by COL ASC";
+        return "SELECT NAME as COL FROM ARTISTS order by COL ASC";
     }
 
 }

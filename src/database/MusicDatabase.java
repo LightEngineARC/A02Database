@@ -21,7 +21,7 @@ public class MusicDatabase {
 
     //used for toggling table dropping (will drop all tables if true)
 //    private static boolean dropTables = true;
-    private static final boolean dropTables = true;
+    private static final boolean dropTables = false;
 
     //used for toggling db table-creation (for example, tables have been modified)
 //    private static boolean addTables = true;
@@ -29,7 +29,7 @@ public class MusicDatabase {
 
     //used for toggling db filling behavior
 //    private static boolean fill = true;
-    private static final boolean fill = true;
+    private static final boolean fill = false;
 
     public ResultSetMetaData getMetaData() {
         return metaData;
@@ -260,6 +260,17 @@ public class MusicDatabase {
      */
     public static void main(String[] args) throws SQLException {
         MusicDatabase mDb = new MusicDatabase();
+//        mDb.executeSqlStatement(
+//                "create index indLaav on l_artists_album_versions (artist, album_version)",
+//                "create index indLas on l_artists_songs (artist, song)",
+//                "create index indAV on album_versions (name, album)",
+//                "create index  indArtists on artists (name)",
+//                "create index  indSongs on SONGS (name)"
+//                );
+       // System.out.println("\nIndexes Created\n");
+        mDb.executeSqlStatement("drop view all_content");
+        mDb.executeSqlStatement(SongsArtistsAlbums.createViewAll());
+        //mDb.executeQueries("select * from all_content fetch first 10000 rows only");
         if (dropTables) {
 //            mDb.dropTable("l_artists_album_versions");
 //            mDb.dropTable("l_songs_album_versions");

@@ -42,10 +42,10 @@ public class AlbumsSql {
     // }
 
     public static String query_All() {
-        return "SELECT * FROM ALBUMS";
+        return "SELECT * FROM album_versions";
     }
 
     public static String query_Albums() {
-        return "SELECT ALBUM_NAME as COL FROM ALBUMS order by COL ASC";
+        return "SELECT NAME as COL FROM album_versions order by COL ASC";
     }
 }

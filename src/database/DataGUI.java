@@ -61,10 +61,10 @@ public class DataGUI extends JFrame {
         group.add(rdbtnArtist);
         group.add(rdbtnAlbum);
         JComboBox<String> artistComboBox = new JComboBox<>();
-        artistComboBox.setBounds(274, 51, 130, 30);
+        artistComboBox.setBounds(274, 51, 200, 30);
         contentPane.add(artistComboBox);
         JComboBox<String> albumComboBox = new JComboBox<>();
-        albumComboBox.setBounds(414, 51, 130, 30);
+        albumComboBox.setBounds(484, 51, 200, 30);
         contentPane.add(albumComboBox);
         JScrollPane scrollPane = new JScrollPane();
 
@@ -169,12 +169,11 @@ public class DataGUI extends JFrame {
         });
 
         try {
-            musicDatabase.executeQueries("SELECT name FROM artists LEFT JOIN l_artists_songs ON " +
-                "artists.id=l_artists_songs.artist");
-//            table.setModel(musicDatabase.tableModelQuery(SongsArtistsAlbums.query_All()));
-//            //musicDatabase.createAndFillDB();
-//            musicDatabase.resultSetToColumn(albumComboBox, AlbumsSql.query_Albums());
-//            musicDatabase.resultSetToColumn(artistComboBox, ArtistsSql.query_Artists());
+            //musicDatabase.executeQueries(SongsArtistsAlbums.query_All());
+            table.setModel(musicDatabase.tableModelQuery(SongsArtistsAlbums.query_All()));
+            //musicDatabase.createAndFillDB();
+            musicDatabase.resultSetToColumn(albumComboBox, AlbumsSql.query_Albums());
+            musicDatabase.resultSetToColumn(artistComboBox, ArtistsSql.query_Artists());
 
         } catch (SQLException e) {
             System.out.println("SQL exception when executing query_all");

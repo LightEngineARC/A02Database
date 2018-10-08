@@ -18,14 +18,12 @@ import java.sql.SQLException;
  */
 @SuppressWarnings("serial")
 public class DataGUI extends JFrame {
-    //Private fields that need to be manipulated by methods
-    private JPanel contentPane;
-    private JTable table;
-    private JTextField textFieldSearch;
-    private JRadioButton rdbtnSong = new JRadioButton("Song");
-    private JRadioButton rdbtnArtist = new JRadioButton("Artist");
-    private JRadioButton rdbtnAlbum = new JRadioButton("Album");
-    private static MusicDatabase musicDatabase = new MusicDatabase();
+    private final JTable table;
+    private final JTextField textFieldSearch;
+    private final JRadioButton rdbtnSong = new JRadioButton("Song");
+    private final JRadioButton rdbtnArtist = new JRadioButton("Artist");
+    private final JRadioButton rdbtnAlbum = new JRadioButton("Album");
+    private static final MusicDatabase musicDatabase = new MusicDatabase();
     
 
     /**
@@ -33,16 +31,14 @@ public class DataGUI extends JFrame {
      */
 
     public static void main(String[] args) {
-        EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                try {
-                    DataGUI frame = new DataGUI();
-                    frame.setVisible(true);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                } finally {
-                    musicDatabase.shutdown();
-                }
+        EventQueue.invokeLater(() -> {
+            try {
+                DataGUI frame = new DataGUI();
+                frame.setVisible(true);
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                musicDatabase.shutdown();
             }
         });
 
@@ -54,7 +50,8 @@ public class DataGUI extends JFrame {
     public DataGUI() {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 720, 475);
-        contentPane = new JPanel();
+        //Private fields that need to be manipulated by methods
+        JPanel contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
         setContentPane(contentPane);
         contentPane.setLayout(null);
@@ -120,6 +117,7 @@ public class DataGUI extends JFrame {
                 try {
                     table.setModel(musicDatabase.tableModelQuery(SongsArtistsAlbums.query_Artist_String(filterArtist)));
                 } catch(SQLException e){
+                    e.printStackTrace();
                     System.out.println("SQL exception when filtering by artists");
                 }
 
@@ -133,6 +131,7 @@ public class DataGUI extends JFrame {
                 try {
                     table.setModel(musicDatabase.tableModelQuery(SongsArtistsAlbums.query_Album_String(filterAlbum)));
                 } catch(SQLException e){
+                    e.printStackTrace();
                     System.out.println("SQL exception when filtering by Album");
                 }
             }
@@ -170,13 +169,16 @@ public class DataGUI extends JFrame {
         });
 
         try {
-            table.setModel(musicDatabase.tableModelQuery(SongsArtistsAlbums.query_All()));
-            //musicDatabase.createAndFillDB();
-            musicDatabase.resultSetToColumn(albumComboBox, AlbumsSql.query_Albums());
-            musicDatabase.resultSetToColumn(artistComboBox, ArtistsSql.query_Artists());
+            musicDatabase.executeQueries("SELECT name FROM artists LEFT JOIN l_artists_songs ON " +
+                "artists.id=l_artists_songs.artist");
+//            table.setModel(musicDatabase.tableModelQuery(SongsArtistsAlbums.query_All()));
+//            //musicDatabase.createAndFillDB();
+//            musicDatabase.resultSetToColumn(albumComboBox, AlbumsSql.query_Albums());
+//            musicDatabase.resultSetToColumn(artistComboBox, ArtistsSql.query_Artists());
 
         } catch (SQLException e) {
             System.out.println("SQL exception when executing query_all");
+            e.printStackTrace();
         }
     }
     /**

@@ -21,7 +21,7 @@ public class MusicDatabase {
 
     //used for toggling table dropping (will drop all tables if true)
 //    private static boolean dropTables = true;
-    private static final boolean dropTables = false;
+    private static final boolean dropTables = true;
 
     //used for toggling db table-creation (for example, tables have been modified)
 //    private static boolean addTables = true;
@@ -29,7 +29,7 @@ public class MusicDatabase {
 
     //used for toggling db filling behavior
 //    private static boolean fill = true;
-    private static final boolean fill = false;
+    private static final boolean fill = true;
 
     public ResultSetMetaData getMetaData() {
         return metaData;
@@ -261,13 +261,15 @@ public class MusicDatabase {
     public static void main(String[] args) throws SQLException {
         MusicDatabase mDb = new MusicDatabase();
         if (dropTables) {
-            mDb.dropTable("l_artists_album_versions");
-            mDb.dropTable("l_songs_album_versions");
-            mDb.dropTable("l_artists_songs");
-            mDb.dropTable("album_versions");
-            mDb.dropTable("albums");
-            mDb.dropTable("artists");
-            mDb.dropTable("songs");
+//            mDb.dropTable("l_artists_album_versions");
+//            mDb.dropTable("l_songs_album_versions");
+//            mDb.dropTable("l_artists_songs");
+//            mDb.dropTable("album_versions");
+//            mDb.dropTable("albums");
+//            mDb.dropTable("artists");
+//            mDb.dropTable("songs");
+//            mDb.executeSqlStatement("ALTER TABLE album_versions DROP CONSTRAINT fk_album_version_album");
+            mDb.executeSqlStatement("TRUNCATE TABLE albums");
         }
         //if we need to create the database, do so
         if (addTables) {
@@ -286,6 +288,9 @@ public class MusicDatabase {
             SQLFactory.fillDB(false);
         } else
             System.out.println("Already filled database\n");
+
+        //FIXME is this constraint not existing going to screw us over?`
+//        mDb.executeSqlStatement("ALTER TABLE album_versions ADD CONSTRAINT fk_album_version_album FOREIGN KEY (album) REFERENCES albums (id)");
 
 //        mDb.executeQueries(
 //        "SELECT songs.name, artists.name, albums.name "

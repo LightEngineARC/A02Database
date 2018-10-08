@@ -45,6 +45,7 @@ public abstract class Parser {
      */
     public void parseData(String format) {
         try {
+            int count = 1; //counter for progress
             //data to format
             File dirtyData = new File("data/dirty_data/" + fileName);
 
@@ -86,11 +87,15 @@ public abstract class Parser {
                 sb.append(")");
                 //execute statement
                 try {
-                    log = sb.toString();
-                    db.executeSqlStatement(log);
+//                    log = sb.toString();
+//                    db.executeSqlStatement(log);
+                    db.executeSqlStatement(sb.toString());
                 } catch (SQLException e) {
-                    System.out.println(log);
+//                    System.out.println(log);
                 }
+                if (count % 250000 == 0)
+                    System.out.println(count);
+                count++;
             }
         } catch (IOException e) {
             System.out.println("Hint: does file path data/dirty_data/* exist?");

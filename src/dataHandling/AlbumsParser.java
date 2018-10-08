@@ -17,8 +17,7 @@ public class AlbumsParser extends Parser {
      * see parent class
      */
     public void parseData() {
-        String format = "ALBUM_NAME, GENRE, RELEASE_YEAR, ARTIST_ID";
-        super.parseData(format);
+        super.parseData(getFormat());
     }
 
     @Override

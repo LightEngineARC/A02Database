@@ -4,14 +4,15 @@ public class SQLFactory {
     public static void fillDB(Boolean databaseFilled) {
         if (!databaseFilled) {
             Parser[] parsers = new Parser[]{
-                new ArtistsParser(), new SongsParser(),
-                new AlbumsParser(), new AlbumVersionsParser(),
-                    new AssociativeParser.ArtistsAlbumsParser(),
-                    new AssociativeParser.ArtistsSongsParser(),
-                    new AssociativeParser.SongsAlbumsParser(),
+//                new ArtistsParser(), new SongsParser(),
+                new AlbumsParser(), //new AlbumVersionsParser(),
+//                    new AssociativeParser.ArtistsAlbumsParser(),
+//                    new AssociativeParser.ArtistsSongsParser(),
+//                    new AssociativeParser.SongsAlbumsParser(),
             };
 
             for (Parser parser : parsers) {
+                System.out.println("Began filling: " + parser.getClass());
                 parser.parseData(parser.getFormat());
                 System.out.println("Finished filling: " + parser.getClass());
             }

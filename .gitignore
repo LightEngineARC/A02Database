@@ -408,4 +408,4 @@ data/dirty_data
 /mbdump/
 
 # scratch files
-/*/*/Test.*
+#/*/*/Test.*
